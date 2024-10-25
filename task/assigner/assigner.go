@@ -81,10 +81,6 @@ func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
 		NBits:      nbits,
 		Nonce:      [8]byte{},
 	}
-	nonce, err := r.client.PendingNonceAt(context.Background(), r.account)
-	if err != nil {
-		return errors.Wrap(err, "failed to get pending nonce")
-	}
 	prover := provers[rand.Intn(len(provers))]
 	tx, err := r.minterInstance.Mint(
 		&bind.TransactOpts{
@@ -92,7 +88,6 @@ func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
 			Signer: func(a common.Address, t *types.Transaction) (*types.Transaction, error) {
 				return types.SignTx(t, r.signer, r.prv)
 			},
-			Nonce: new(big.Int).SetUint64(nonce),
 		},
 		minter.BlockInfo{
 			Meta:       h.Meta,
@@ -117,6 +112,12 @@ func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to send tx")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+	_, err = bind.WaitMined(ctx, r.client, tx)
+	if err != nil {
+		return errors.Wrap(err, "failed to wait tx mined")
 	}
 	slog.Info("send tx to minter contract success", "hash", tx.Hash().String())
 	if err := r.db.AssignTask(projectID, taskID, prover); err != nil {
