@@ -7,7 +7,7 @@ W3bstream is a key Layer-2 solution within the IoTeX ecosystem, designed to supp
 ## Workflow
 
 <p align="center">
-  <img src="./docs/arch_new.png"/>
+  <img src="./docs/arch_new.png" width="75%"/>
 </p>
 
 **Sequencer nodes** assemble received data messages with a “block header” that (among other things) references the previous block of data. Each block of data is mined using a proof-of-work mechanism and is then assigned as a Task to a Prover node that is available for data computation. Sequencer nodes receive rewards in IOTX for the mining activity.
@@ -18,25 +18,24 @@ The chain of tasks and their ZK-proofs are recorded **on the IoTeX blockchain**,
 
 This architecture ensures secure, reliable, and scalable data processing, allowing DePIN dApps to act on verified real-world facts to trigger blockchain-based incentives.
 
-## Architecture
+## Get Started
 
-[Detailed system architecture description →](./docs/ARCHITECTURE.md)
+[Deploy a simple W3bstream prover →](./docs/QUICK_START.md)
+
+[Build custom provers →](./docs/DEVELOPER_GUIDE.md)
 
 ## Docker images
 
-* [Sequencer](https://github.com/iotexproject/w3bstream/pkgs/container/w3bstream-sequencer)
-* [Prover](https://github.com/iotexproject/w3bstream/pkgs/container/w3bstream-prover)
+[Sequencer Node →](https://github.com/iotexproject/w3bstream/pkgs/container/w3bstream-sequencer)
 
-## Running
-
-For users who just want to give it a try, please refer to [Quick Start →](./docs/QUICK_START.md), which will guide you through how to interact with existing projects deployed on testnet.
-
-Developers looking to build circuits and deploy W3bstream projects should consult the [DEVELOPER_GUIDE →](./docs/DEVELOPER_GUIDE.md)
+[Prover Node →](https://github.com/iotexproject/w3bstream/pkgs/container/w3bstream-prover)
 
 ## Contract Deployments
 
-Coming
+ [smartcontracts/README.md](./smartcontracts/README.md#deployment)
 
 ## Contributing
 
-We welcome contributions! Please read our [contributing guidelines](./docs/CONTRIBUTING.md) and submit pull requests to our GitHub repository.
+We welcome contributions!
+
+Please read our [contributing guidelines](./docs/CONTRIBUTING.md) and submit pull requests to our GitHub repository.
