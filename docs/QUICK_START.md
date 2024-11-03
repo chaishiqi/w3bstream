@@ -4,7 +4,7 @@
 
 Ensure you have the following tools installed:
 
-- [ioctl](https://docs.iotex.io/builders/reference-docs/ioctl-client#install-latest-release-build): For interacting with the IoTeX blockchain.
+- [ioctl](https://docs.iotex.io/builders/reference-docs/ioctl-client#install-latest-release-build): For interacting with the IoTeX blockchain (please [build the latest dev branch](https://docs.iotex.io/builders/reference-docs/ioctl-client#build-the-current-development-branch)).
 - [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html): Required for building the prover code.
 - [curl](https://curl.se/): For sending messages to the API node.
 
@@ -16,16 +16,26 @@ Start by creating an IoTeX developer wallet and funding it with test tokens.
 
 ```sh
 ioctl account createadd devaccount
+
+# Display account info
+ioctl account info devaccount
 ```
 
 Note the 0x wallet address provided. You can claim test IOTX tokens on the Developer portal at <https://developers.iotex.io/faucet>
+
+```sh
+# Query account balance
+ioctl account balance devaccount
+# Export the private key if needed
+ioctl account export devaccount
+```
 
 ## Step 2: Register a new DePIN Project on IoTeX
 
 To register a new project: 
 
 ```sh
-ioctl ioid register "your project unique name"
+ioctl ioid register "your_project_unique_name"
 ```
 
 Take note of your `Project ID` and set it as an environment variable:
@@ -43,7 +53,7 @@ git clone https://github.com/iotexproject/w3bstream
 
 cd w3bstream/examples/risc0-circuit
 
-ioctl ws project update --id $PROJECT_ID --path range_prover.json
+ioctl ws project update --id $PROJECT_ID --path range-prover.json
 ```
 
 ## Step 4: Link Your Project to the Dummy DApp Contract
@@ -82,14 +92,14 @@ curl --location 'https://dragonfruit-testnet.w3bstream.com/message' \
 }'
 ```
 
-Record the Task ID from the response, wait a few minutes, and then check its status:
+Record the Task ID from the response, wait a few minutes, and then check its status (customise the Task ID field):
 
 ```sh
-curl --location --request GET 'https://dragonfruit-testnet.w3bstream.com/task' \                                   
+curl --location --request GET 'https://dragonfruit-testnet.w3bstream.com/task' \
 --header 'Content-Type: application/json' \
 --data '{
     "projectID": '"$PROJECT_ID"',
-    "taskID": "YOUR TASK ID HERE"
+    "taskID": "YOUR_TASK_ID_HERE"
 }' | jq
 ```
 
