@@ -32,7 +32,7 @@ ioctl account export devaccount
 
 ## Step 2: Register a new DePIN Project on IoTeX
 
-To register a new project: 
+To register a new project:
 
 ```sh
 ioctl ioid register "your_project_unique_name"
@@ -61,12 +61,13 @@ ioctl ws project update --id $PROJECT_ID --path range-prover.json
 Bind your project to a sample DApp contract to ensure it receives your ZK proofs:
 
 ```sh
-ioctl ws router bind --project-id $PROJECT_ID --dapp 0xba0104cD02672840Da55Bb14bebdd047Dfbfc02B
+ioctl ws router bind --project-id $PROJECT_ID --dapp 0xe48eF7D13805487B74CDFC47BDC174446C31f541
 ```
 
 <details>
   <summary> Learn more</summary>
     The "dummy dapp" is a simple contract that will store ZK-Proofs from W3bstream without further processing. This can be useful for debugging proof generation if your Dapp is experiencing issues.
+    find the [source code here](https://github.com/iotexproject/w3bstream/blob/develop/examples/risc0-circuit/contract/Risc0Dapp.sol)
 </details>
 
 ## Step 5: Activate Your Project
