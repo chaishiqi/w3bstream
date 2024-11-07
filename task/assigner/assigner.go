@@ -3,9 +3,9 @@ package assigner
 import (
 	"context"
 	"crypto/ecdsa"
-	"encoding/json"
 	"log/slog"
 	"math/big"
+	"strconv"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -13,9 +13,11 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/rand"
 
+	"github.com/iotexproject/w3bstream/metrics"
 	"github.com/iotexproject/w3bstream/smartcontracts/go/minter"
 	"github.com/iotexproject/w3bstream/task"
 )
@@ -81,32 +83,28 @@ func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
 		},
 	)
 	if err != nil {
-		jsonErr := &struct {
-			Code    int         `json:"code"`
-			Message string      `json:"message"`
-			Data    interface{} `json:"data,omitempty"`
-		}{}
-		je, nerr := json.Marshal(err)
-		if nerr != nil {
-			return errors.Wrap(err, "failed to marshal send tx error")
+		if jsonErr, ok := err.(rpc.DataError); ok {
+			errData := jsonErr.ErrorData()
+			errMsg := jsonErr.Error()
+			errCode := err.(rpc.Error).ErrorCode()
+			return errors.Wrapf(err, "failed to send tx to minter contract, errData: %v, errMsg: %s, errCode: %d", errData, errMsg, errCode)
 		}
-		if err := json.Unmarshal(je, jsonErr); err != nil {
-			return errors.Wrap(err, "failed to unmarshal send tx error")
-		}
-		return errors.Errorf("failed to send tx, error_code: %v, error_message: %v, error_data: %v", jsonErr.Code, jsonErr.Message, jsonErr.Data)
+		return errors.Wrap(err, "failed to send tx to minter contract")
 	}
 	slog.Info("send tx to minter contract success", "hash", tx.Hash().String())
-	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	receipt, err := bind.WaitMined(ctx, r.client, tx)
 	if err != nil {
 		return errors.Wrap(err, "failed to wait tx mined")
 	}
-	if receipt.Status != types.ReceiptStatusSuccessful {
-		return errors.New("tx failed")
-	}
 	if err := r.db.AssignTask(projectID, taskID, prover); err != nil {
 		return err
+	}
+	if receipt.Status != types.ReceiptStatusSuccessful {
+		metrics.FailedAssignedTaskMtc.WithLabelValues(strconv.FormatUint(projectID, 10)).Inc()
+		slog.Error("fail to assign task", "tx", tx.Hash().String())
+		return errors.New("tx failed")
 	}
 	return nil
 }
