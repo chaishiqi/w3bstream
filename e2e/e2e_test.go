@@ -156,7 +156,7 @@ func TestE2E(t *testing.T) {
 	require.NoError(t, err)
 
 	err = waitUntil(func() (bool, error) {
-		states, err := queryTask(projectID.Uint64(), taskID, apiNodeUrl)
+		states, err := queryTask(taskID, apiNodeUrl)
 		if err != nil {
 			return false, err
 		}
@@ -170,7 +170,7 @@ func TestE2E(t *testing.T) {
 	require.NoError(t, err)
 
 	err = waitUntil(func() (bool, error) {
-		states, err := queryTask(projectID.Uint64(), taskID, apiNodeUrl)
+		states, err := queryTask(taskID, apiNodeUrl)
 		if err != nil {
 			return false, err
 		}
@@ -239,9 +239,10 @@ func sendETH(t *testing.T, chainEndpoint string, payerHex string, toAddress comm
 
 func signMesssage(data []byte, projectID uint64, key *ecdsa.PrivateKey) ([]byte, error) {
 	req := &api.CreateTaskReq{
+		Nonce:          uint64(time.Now().Unix()),
 		ProjectID:      projectID,
 		ProjectVersion: "v1.0.0",
-		Payloads:       []string{string(data)},
+		Payloads:       []string{hexutil.Encode(data)},
 	}
 
 	reqJson, err := json.Marshal(req)
@@ -290,10 +291,9 @@ func createTask(body []byte, apiurl string) (string, error) {
 	return handleMessageResp.TaskID, nil
 }
 
-func queryTask(projectID uint64, taskID string, apiurl string) (*api.QueryTaskResp, error) {
+func queryTask(taskID string, apiurl string) (*api.QueryTaskResp, error) {
 	req := &api.QueryTaskReq{
-		ProjectID: projectID,
-		TaskID:    taskID,
+		TaskID: taskID,
 	}
 
 	reqJson, err := json.Marshal(req)
