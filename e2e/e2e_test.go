@@ -88,7 +88,7 @@ func TestE2E(t *testing.T) {
 	})
 
 	// APINode init
-	apiNode, apiNodeUrl, err := apiNodeInit(PGURI, chainEndpoint, contracts.TaskManager)
+	apiNode, apiNodeUrl, err := apiNodeInit(PGURI, chainEndpoint, contracts.TaskManager, contracts.ProjectDevice)
 	require.NoError(t, err)
 	err = apiNode.Start()
 	require.NoError(t, err)
@@ -127,6 +127,14 @@ func TestE2E(t *testing.T) {
 	projectID, err := registerProject(t, chainEndpoint, ipfsEndpoint, projectFilePath, contracts, projectOwnerKey)
 	require.NoError(t, err)
 
+	// Approve device
+	deviceKey, err := crypto.GenerateKey()
+	require.NoError(t, err)
+	deviceAddr := crypto.PubkeyToAddress(deviceKey.PublicKey)
+	err = sendETH(t, chainEndpoint, payerHex, deviceAddr, 20)
+	require.NoError(t, err)
+	registerDevice(t, chainEndpoint, contracts, deviceKey, projectOwnerKey, projectID)
+
 	// Register prover
 	proverAddr := crypto.PubkeyToAddress(proverKey.PublicKey)
 	err = sendETH(t, chainEndpoint, payerHex, proverAddr, 20)
@@ -147,9 +155,7 @@ func TestE2E(t *testing.T) {
 	dataJson, err := json.Marshal(msgData)
 	require.NoError(t, err)
 
-	senderKey, err := crypto.GenerateKey()
-	require.NoError(t, err)
-	reqBody, err := signMesssage(dataJson, projectID.Uint64(), senderKey)
+	reqBody, err := signMesssage(dataJson, projectID.Uint64(), deviceKey)
 	require.NoError(t, err)
 
 	taskID, err := createTask(reqBody, apiNodeUrl)
