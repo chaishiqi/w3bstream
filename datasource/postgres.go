@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/iotexproject/w3bstream/service/apinode/persistence"
+	"github.com/iotexproject/w3bstream/service/apinode/db"
 	"github.com/iotexproject/w3bstream/task"
 )
 
@@ -21,7 +21,7 @@ func (p *Postgres) Retrieve(taskIDs []common.Hash) ([]*task.Task, error) {
 	if len(taskIDs) == 0 {
 		return nil, errors.New("empty query task ids")
 	}
-	ts := []*persistence.Task{}
+	ts := []*db.Task{}
 	if err := p.db.Where("task_id IN ?", taskIDs).First(&ts).Error; err != nil {
 		return nil, errors.Wrap(err, "failed to query tasks")
 	}
@@ -33,11 +33,11 @@ func (p *Postgres) Retrieve(taskIDs []common.Hash) ([]*task.Task, error) {
 			return nil, errors.Wrapf(err, "failed to unmarshal task payloads, task_id %v", t.TaskID)
 		}
 		res = append(res, &task.Task{
-			ID:             t.TaskID,
+			ID:             common.BytesToHash(t.TaskID),
 			ProjectID:      t.ProjectID,
 			ProjectVersion: t.ProjectVersion,
 			Payloads:       ps,
-			DeviceID:       t.DeviceID,
+			DeviceID:       common.BytesToAddress(t.DeviceID),
 			Signature:      t.Signature,
 		})
 	}
