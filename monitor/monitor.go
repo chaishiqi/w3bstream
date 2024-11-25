@@ -16,6 +16,8 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 
+	"github.com/iotexproject/w3bstream/metrics"
+	"github.com/iotexproject/w3bstream/smartcontracts/go/ioid"
 	"github.com/iotexproject/w3bstream/smartcontracts/go/minter"
 	"github.com/iotexproject/w3bstream/smartcontracts/go/project"
 	"github.com/iotexproject/w3bstream/smartcontracts/go/prover"
@@ -24,11 +26,12 @@ import (
 
 type (
 	ScannedBlockNumber       func() (uint64, error)
-	UpsertScannedBlockNumber func(uint64) error
-	AssignTask               func(uint64, common.Hash, common.Address) error
-	SettleTask               func(uint64, common.Hash, common.Hash) error
-	UpsertProject            func(uint64, string, common.Hash) error
-	UpsertProver             func(common.Address) error
+	UpsertScannedBlockNumber func(number uint64) error
+	AssignTask               func(taskID common.Hash, prover common.Address) error
+	SettleTask               func(taskID, tx common.Hash) error
+	UpsertProject            func(projectID uint64, uri string, hash common.Hash) error
+	UpsertProver             func(addr common.Address) error
+	UpsertProjectDevice      func(projectID uint64, address common.Address) error
 )
 
 type Handler struct {
@@ -38,6 +41,7 @@ type Handler struct {
 	SettleTask
 	UpsertProject
 	UpsertProver
+	UpsertProjectDevice
 }
 
 type ContractAddr struct {
@@ -45,6 +49,7 @@ type ContractAddr struct {
 	Project     common.Address
 	Minter      common.Address
 	TaskManager common.Address
+	IoID        common.Address
 }
 
 type contract struct {
@@ -58,6 +63,7 @@ type contract struct {
 	taskManagerInstance  *taskmanager.Taskmanager
 	proverInstance       *prover.Prover
 	projectInstance      *project.Project
+	ioidInstance         *ioid.Ioid
 }
 
 var (
@@ -65,6 +71,7 @@ var (
 	taskSettledTopic          = crypto.Keccak256Hash([]byte("TaskSettled(uint256,bytes32,address)"))
 	projectConfigUpdatedTopic = crypto.Keccak256Hash([]byte("ProjectConfigUpdated(uint256,string,bytes32)"))
 	proverSetTopic            = crypto.Keccak256Hash([]byte("BeneficiarySet(address,address)"))
+	createIoIDTopic           = crypto.Keccak256Hash([]byte("CreateIoID(address,uint256,address,string)"))
 )
 
 var allTopic = []common.Hash{
@@ -72,12 +79,13 @@ var allTopic = []common.Hash{
 	taskSettledTopic,
 	projectConfigUpdatedTopic,
 	proverSetTopic,
+	createIoIDTopic,
 }
 
 var emptyAddr = common.Address{}
 
 func (a *ContractAddr) all() []common.Address {
-	all := make([]common.Address, 0, 4)
+	all := make([]common.Address, 0, 5)
 	if !bytes.Equal(a.Minter[:], emptyAddr[:]) {
 		all = append(all, a.Minter)
 	}
@@ -89,6 +97,9 @@ func (a *ContractAddr) all() []common.Address {
 	}
 	if !bytes.Equal(a.TaskManager[:], emptyAddr[:]) {
 		all = append(all, a.TaskManager)
+	}
+	if !bytes.Equal(a.IoID[:], emptyAddr[:]) {
+		all = append(all, a.IoID)
 	}
 	return all
 }
@@ -111,9 +122,10 @@ func (c *contract) processLogs(logs []types.Log) error {
 			if err != nil {
 				return errors.Wrap(err, "failed to parse task assigned event")
 			}
-			if err := c.h.AssignTask(e.ProjectId.Uint64(), e.TaskId, e.Prover); err != nil {
+			if err := c.h.AssignTask(e.TaskId, e.Prover); err != nil {
 				return err
 			}
+			metrics.AssignedTaskMtc.WithLabelValues(e.ProjectId.String()).Inc()
 		case taskSettledTopic:
 			if c.taskManagerInstance == nil || c.h.SettleTask == nil {
 				continue
@@ -122,9 +134,10 @@ func (c *contract) processLogs(logs []types.Log) error {
 			if err != nil {
 				return errors.Wrap(err, "failed to parse task settled event")
 			}
-			if err := c.h.SettleTask(e.ProjectId.Uint64(), e.TaskId, l.TxHash); err != nil {
+			if err := c.h.SettleTask(e.TaskId, l.TxHash); err != nil {
 				return err
 			}
+			metrics.SucceedTaskNumMtc.WithLabelValues(e.ProjectId.String()).Inc()
 		case projectConfigUpdatedTopic:
 			if c.projectInstance == nil || c.h.UpsertProject == nil {
 				continue
@@ -145,6 +158,22 @@ func (c *contract) processLogs(logs []types.Log) error {
 				return errors.Wrap(err, "failed to parse prover set event")
 			}
 			if err := c.h.UpsertProver(e.Prover); err != nil {
+				return err
+			}
+		case createIoIDTopic:
+			if c.ioidInstance == nil || c.h.UpsertProjectDevice == nil {
+				continue
+			}
+			e, err := c.ioidInstance.ParseCreateIoID(l)
+			if err != nil {
+				return errors.Wrap(err, "failed to parse create ioid event")
+			}
+			address := common.HexToAddress(strings.TrimPrefix(e.Did, "did:io:"))
+			pid, err := c.ioidInstance.DeviceProject(nil, address)
+			if err != nil {
+				return errors.Wrapf(err, "failed to query device project, device_id %s", e.Did)
+			}
+			if err := c.h.UpsertProjectDevice(pid.Uint64(), address); err != nil {
 				return err
 			}
 		}
@@ -193,6 +222,7 @@ func (c *contract) list() (uint64, error) {
 		if err := c.h.UpsertScannedBlockNumber(to); err != nil {
 			return 0, err
 		}
+		metrics.SyncedBlockHeightMtc.Set(float64(to))
 		from = to + 1
 	}
 	slog.Info("contract data synchronization completed", "current_height", to)
@@ -210,6 +240,14 @@ func (c *contract) watch(listedBlockNumber uint64) {
 	go func() {
 		for range ticker.C {
 			target := scannedBlockNumber + 1
+			currheight, err := c.client.BlockNumber(context.Background())
+			if err != nil {
+				slog.Error("failed to get current block number", "error", err)
+				continue
+			}
+			if target > currheight {
+				continue
+			}
 
 			query.FromBlock = new(big.Int).SetUint64(target)
 			query.ToBlock = new(big.Int).SetUint64(target)
@@ -276,6 +314,13 @@ func Run(h *Handler, addr *ContractAddr, beginningBlockNumber uint64, chainEndpo
 			return errors.Wrap(err, "failed to new project contract instance")
 		}
 		c.projectInstance = projectInstance
+	}
+	if !bytes.Equal(addr.IoID[:], emptyAddr[:]) {
+		ioidInstance, err := ioid.NewIoid(addr.IoID, client)
+		if err != nil {
+			return errors.Wrap(err, "failed to new ioid contract instance")
+		}
+		c.ioidInstance = ioidInstance
 	}
 
 	listedBlockNumber, err := c.list()

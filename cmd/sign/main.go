@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/pkg/errors"
 
-	"github.com/iotexproject/w3bstream/cmd/apinode/api"
+	"github.com/iotexproject/w3bstream/service/apinode/api"
 )
 
 func main() {
@@ -17,10 +17,10 @@ func main() {
 	if err != nil {
 		log.Fatal(errors.Wrap(err, "failed to parse private key"))
 	}
-	req := &api.HandleMessageReq{
+	req := &api.CreateTaskReq{
 		ProjectID:      912,
 		ProjectVersion: "v1.0.0",
-		Data:           "{\"private_input\":\"14\", \"public_input\":\"3,34\", \"receipt_type\":\"Snark\"}",
+		Payloads:       []string{"{\"private_input\":\"14\", \"public_input\":\"3,34\", \"receipt_type\":\"Snark\"}"},
 	}
 	reqJson, _ := json.Marshal(req)
 	fmt.Println(string(reqJson))

@@ -3,9 +3,9 @@ package assigner
 import (
 	"context"
 	"crypto/ecdsa"
-	"encoding/json"
 	"log/slog"
 	"math/big"
+	"strconv"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -13,18 +13,20 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/rand"
 
+	"github.com/iotexproject/w3bstream/metrics"
 	"github.com/iotexproject/w3bstream/smartcontracts/go/minter"
 	"github.com/iotexproject/w3bstream/task"
 )
 
-type RetrieveTask func(projectID uint64, taskID common.Hash) (*task.Task, error)
+type RetrieveTask func(taskIDs []common.Hash) ([]*task.Task, error)
 
 type DB interface {
-	UnassignedTask() (uint64, common.Hash, error)
-	AssignTask(projectID uint64, taskID common.Hash, prover common.Address) error
+	UnassignedTasks(limit int) ([]common.Hash, error)
+	AssignTasks(taskIDs []common.Hash) error
 	Provers() ([]common.Address, error)
 }
 
@@ -36,14 +38,11 @@ type assigner struct {
 	client         *ethclient.Client
 	db             DB
 	retrieve       RetrieveTask
+	bandwidth      int
 	minterInstance *minter.Minter
 }
 
-func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
-	t, err := r.retrieve(projectID, taskID)
-	if err != nil {
-		return err
-	}
+func (r *assigner) assign(tids []common.Hash) error {
 	provers, err := r.db.Provers()
 	if err != nil {
 		return errors.Wrap(err, "failed to get provers")
@@ -51,11 +50,29 @@ func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
 	if len(provers) == 0 {
 		return errors.New("no available prover")
 	}
-	prover := provers[rand.Intn(len(provers))]
 
-	th, err := t.Hash()
+	tas := []minter.TaskAssignment{}
+	ts, err := r.retrieve(tids)
 	if err != nil {
-		return errors.Wrap(err, "failed to hash task")
+		return err
+	}
+	for _, t := range ts {
+		prover := provers[rand.Intn(len(provers))]
+
+		th, err := t.Hash()
+		if err != nil {
+			return errors.Wrap(err, "failed to hash task")
+		}
+		sig := t.Signature
+		sig[64] += 27
+
+		tas = append(tas, minter.TaskAssignment{
+			ProjectId: new(big.Int).SetUint64(t.ProjectID),
+			TaskId:    t.ID,
+			Prover:    prover,
+			Hash:      th,
+			Signature: sig,
+		})
 	}
 
 	tx, err := r.minterInstance.Mint(
@@ -70,52 +87,51 @@ func (r *assigner) assign(projectID uint64, taskID common.Hash) error {
 			Operator:    r.account,
 			Beneficiary: r.account,
 		},
-		[]minter.TaskAssignment{
-			{
-				ProjectId: new(big.Int).SetUint64(projectID),
-				TaskId:    taskID,
-				Prover:    prover,
-				Hash:      th,
-				Signature: t.Signature,
-			},
-		},
+		tas,
 	)
 	if err != nil {
-		jsonErr := &struct {
-			Code    int         `json:"code"`
-			Message string      `json:"message"`
-			Data    interface{} `json:"data,omitempty"`
-		}{}
-		je, nerr := json.Marshal(err)
-		if nerr != nil {
-			return errors.Wrap(err, "failed to marshal send tx error")
+		if jsonErr, ok := err.(rpc.DataError); ok {
+			errData := jsonErr.ErrorData()
+			errMsg := jsonErr.Error()
+			errCode := err.(rpc.Error).ErrorCode()
+			return errors.Wrapf(err, "failed to send tx to minter contract, errData: %v, errMsg: %s, errCode: %d", errData, errMsg, errCode)
 		}
-		if err := json.Unmarshal(je, jsonErr); err != nil {
-			return errors.Wrap(err, "failed to unmarshal send tx error")
-		}
-		return errors.Errorf("failed to send tx, error_code: %v, error_message: %v, error_data: %v", jsonErr.Code, jsonErr.Message, jsonErr.Data)
+		return errors.Wrap(err, "failed to send tx to minter contract")
 	}
 	slog.Info("send tx to minter contract success", "hash", tx.Hash().String())
-	if err := r.db.AssignTask(projectID, taskID, prover); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	receipt, err := bind.WaitMined(ctx, r.client, tx)
+	if err != nil {
+		return errors.Wrap(err, "failed to wait tx mined")
+	}
+	if err := r.db.AssignTasks(tids); err != nil {
 		return err
+	}
+	if receipt.Status != types.ReceiptStatusSuccessful {
+		for _, t := range ts {
+			metrics.FailedAssignedTaskMtc.WithLabelValues(strconv.FormatUint(t.ProjectID, 10)).Inc()
+		}
+		slog.Error("failed to assign task", "tx", tx.Hash().String())
+		return errors.New("tx failed")
 	}
 	return nil
 }
 
 func (r *assigner) run() {
 	for {
-		projectID, taskID, err := r.db.UnassignedTask()
+		tids, err := r.db.UnassignedTasks(r.bandwidth)
 		if err != nil {
-			slog.Error("failed to get unassigned task", "error", err)
+			slog.Error("failed to get unassigned tasks", "error", err)
 			time.Sleep(r.waitingTime)
 			continue
 		}
-		if projectID == 0 {
+		if len(tids) == 0 {
 			time.Sleep(r.waitingTime)
 			continue
 		}
-		if err := r.assign(projectID, taskID); err != nil {
-			slog.Error("failed to assign task", "error", err)
+		if err := r.assign(tids); err != nil {
+			slog.Error("failed to assign tasks", "error", err)
 			time.Sleep(r.waitingTime)
 			continue
 		}
@@ -123,7 +139,7 @@ func (r *assigner) run() {
 	}
 }
 
-func Run(db DB, prv *ecdsa.PrivateKey, chainEndpoint string, retrieve RetrieveTask, minterAddr common.Address) error {
+func Run(db DB, prv *ecdsa.PrivateKey, chainEndpoint string, retrieve RetrieveTask, minterAddr common.Address, bandwidth int) error {
 	client, err := ethclient.Dial(chainEndpoint)
 	if err != nil {
 		return errors.Wrap(err, "failed to dial chain endpoint")
@@ -143,6 +159,7 @@ func Run(db DB, prv *ecdsa.PrivateKey, chainEndpoint string, retrieve RetrieveTa
 		signer:         types.NewLondonSigner(chainID),
 		account:        crypto.PubkeyToAddress(prv.PublicKey),
 		client:         client,
+		bandwidth:      bandwidth,
 		retrieve:       retrieve,
 		minterInstance: minterInstance,
 	}

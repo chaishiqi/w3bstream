@@ -13,6 +13,12 @@ async function main() {
 
     projectAddr = MockProject.target.toString()
   }
+  if (process.env.DAPP_PROCESSOR) {
+  } else {
+    const MockProcessor = await ethers.deployContract('MockProcessor', []);
+    await MockProcessor.waitForDeployment();
+    console.log(`MockProcessor deployed to ${MockProcessor.target}`);
+  }
   if (process.env.PROJECT_REGISTRATION_FEE) {
     projectRegistrationFee = process.env.PROJECT_REGISTRATION_FEE
   }
@@ -94,6 +100,10 @@ async function main() {
   });
   await minter.waitForDeployment();
   console.log(`W3bstreamMinter deployed to ${minter.target}`);
+
+  const MockIoID = await ethers.deployContract('MockIoID', []);
+  await MockIoID.waitForDeployment();
+  console.log(`MockIoID deployed to ${MockIoID.target}`);
 
   tx = await distributor.setOperator(minter.target);
   await tx.wait();

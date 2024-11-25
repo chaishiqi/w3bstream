@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/iotexproject/w3bstream/cmd/apinode/persistence"
+	"github.com/iotexproject/w3bstream/service/apinode/db"
 	"github.com/iotexproject/w3bstream/task"
 )
 
@@ -17,37 +17,34 @@ type Postgres struct {
 	db *gorm.DB
 }
 
-func (p *Postgres) Retrieve(projectID uint64, taskID common.Hash) (*task.Task, error) {
-	t := persistence.Task{}
-	if err := p.db.Where("task_id = ? AND project_id = ?", taskID, projectID).First(&t).Error; err != nil {
-		return nil, errors.Wrap(err, "failed to query task")
+func (p *Postgres) Retrieve(taskIDs []common.Hash) ([]*task.Task, error) {
+	if len(taskIDs) == 0 {
+		return nil, errors.New("empty query task ids")
 	}
-	messageIDs := []uint64{}
-	if err := json.Unmarshal(t.MessageIDs, &messageIDs); err != nil {
-		return nil, errors.Wrapf(err, "failed to unmarshal task message ids, task_id %v", t.TaskID)
-	}
-
-	ms := []*persistence.Message{}
-	if err := p.db.Where("id IN ?", messageIDs).Find(&ms).Error; err != nil {
-		return nil, errors.Wrapf(err, "failed to query task messages, task_id %v", t.TaskID)
-	}
-	if len(ms) == 0 {
-		return nil, errors.Errorf("invalid task, task_id %v", t.TaskID)
+	ts := []*db.Task{}
+	if err := p.db.Where("task_id IN ?", taskIDs).First(&ts).Error; err != nil {
+		return nil, errors.Wrap(err, "failed to query tasks")
 	}
 
-	ds := [][]byte{}
-	for _, m := range ms {
-		ds = append(ds, m.Data)
+	res := []*task.Task{}
+	for _, t := range ts {
+		ps := [][]byte{}
+		if err := json.Unmarshal(t.Payloads, &ps); err != nil {
+			return nil, errors.Wrapf(err, "failed to unmarshal task payloads, task_id %v", t.TaskID)
+		}
+		res = append(res, &task.Task{
+			ID:             common.BytesToHash(t.TaskID),
+			ProjectID:      t.ProjectID,
+			ProjectVersion: t.ProjectVersion,
+			Payloads:       ps,
+			DeviceID:       common.BytesToAddress(t.DeviceID),
+			Signature:      t.Signature,
+		})
 	}
-
-	return &task.Task{
-		ID:             t.TaskID,
-		ProjectID:      ms[0].ProjectID,
-		ProjectVersion: ms[0].ProjectVersion,
-		Payloads:       ds,
-		DeviceID:       ms[0].DeviceID,
-		Signature:      t.Signature,
-	}, nil
+	if len(res) != len(taskIDs) {
+		return nil, errors.Errorf("cannot find all tasks, task_ids %v", taskIDs)
+	}
+	return res, nil
 }
 
 func NewPostgres(dsn string) (*Postgres, error) {
