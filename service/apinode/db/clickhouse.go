@@ -19,7 +19,7 @@ type Task struct {
 	ProjectVersion string    `ch:"project_version"`
 	Payloads       []byte    `ch:"payloads"`
 	Signature      []byte    `ch:"signature"`
-	HashAlgorithm  string    `ch:"hash_algorithm"`
+	Algorithm      string    `ch:"algorithm"`
 	CreatedAt      time.Time `ch:"create_at"`
 }
 
@@ -54,8 +54,8 @@ func migrateCH(conn driver.Conn) error {
             project_version String NOT NULL,
             payloads Array(UInt8) NOT NULL,
             signature Array(UInt8) NOT NULL,
-        	hash_algorithm String NOT NULL,
-        	create_at DateTime NOT NULL
+            algorithm String NOT NULL,
+            create_at DateTime NOT NULL
         )
         ENGINE = ReplacingMergeTree()
         PRIMARY KEY task_id
