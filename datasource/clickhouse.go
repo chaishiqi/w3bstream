@@ -7,6 +7,7 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
 
 	"github.com/iotexproject/w3bstream/service/apinode/db"
@@ -21,9 +22,9 @@ func (p *Clickhouse) Retrieve(taskIDs []common.Hash) ([]*task.Task, error) {
 	if len(taskIDs) == 0 {
 		return nil, errors.New("empty query task ids")
 	}
-	tids := make([][]byte, 0, len(taskIDs))
+	tids := make([]string, 0, len(taskIDs))
 	for _, t := range taskIDs {
-		tids = append(tids, t.Bytes())
+		tids = append(tids, t.Hex())
 	}
 	var ts []db.Task
 	if err := p.db.Select(context.Background(), &ts, "SELECT * FROM w3bstream_tasks WHERE task_id IN ?", tids); err != nil {
@@ -36,13 +37,21 @@ func (p *Clickhouse) Retrieve(taskIDs []common.Hash) ([]*task.Task, error) {
 		if !ok {
 			return nil, errors.New("failed to decode project id string")
 		}
+		payload, err := hexutil.Decode(ts[i].Payload)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to decode payload from hex format")
+		}
+		sig, err := hexutil.Decode(ts[i].Signature)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to decode signature from hex format")
+		}
 		res = append(res, &task.Task{
-			ID:             common.BytesToHash(ts[i].TaskID),
+			ID:             common.HexToHash(ts[i].TaskID),
 			ProjectID:      pid,
 			ProjectVersion: ts[i].ProjectVersion,
-			Payload:        ts[i].Payload,
-			DeviceID:       common.BytesToAddress(ts[i].DeviceID),
-			Signature:      ts[i].Signature,
+			Payload:        payload,
+			DeviceID:       common.HexToAddress(ts[i].DeviceID),
+			Signature:      sig,
 		})
 	}
 	if len(res) != len(taskIDs) {
