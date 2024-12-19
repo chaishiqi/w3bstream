@@ -43,7 +43,7 @@ git clone https://github.com/iotexproject/w3bstream
 
 cd w3bstream/examples/risc0-circuit
 
-ioctl ws project update --id $PROJECT_ID --path range_prover.json
+ioctl ws project update --id $PROJECT_ID --path range-prover.json
 ```
 
 ## Step 4: Link Your Project to the Dummy DApp Contract
