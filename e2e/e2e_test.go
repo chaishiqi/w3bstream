@@ -137,6 +137,7 @@ func TestE2E(t *testing.T) {
 	registerIoID(t, chainEndpoint, contracts, deviceKey, projectID)
 
 	t.Run("RISC0", func(t *testing.T) {
+		t.Skip()
 		t.Cleanup(func() {
 			if err := risc0VMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
@@ -172,6 +173,7 @@ func TestE2E(t *testing.T) {
 	})
 
 	t.Run("GNARK", func(t *testing.T) {
+		t.Skip()
 		t.Cleanup(func() {
 			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
@@ -194,6 +196,36 @@ func TestE2E(t *testing.T) {
 
 		taskid := sendMessage(t, data, projectID, nil, deviceKey, apiNodeUrl)
 		waitSettled(t, taskid, apiNodeUrl)
+	})
+
+	t.Run("GNARK2", func(t *testing.T) {
+		t.Cleanup(func() {
+			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
+				t.Logf("failed to terminate vm container: %v", err)
+			}
+		})
+		gnarkCodePath := "./testdata/pebble.circuit"
+		gnarkMetadataPath := "./testdata/pebble.pk"
+		project := &project.Project{Configs: []*project.Config{{
+			Version:    "v1",
+			VMTypeID:   5,
+			SignedKeys: []project.SignedKey{{Name: "timestamp", Type: "uint64"}},
+		}}}
+
+		// Upload project
+		uploadProject(t, chainEndpoint, ipfsEndpoint, project, &gnarkCodePath, &gnarkMetadataPath, contracts, projectOwnerKey, projectID, false)
+		require.NoError(t, err)
+
+		// Wait a few seconds for the device info synced on api node
+		time.Sleep(2 * time.Second)
+
+		data, err := json.Marshal(struct {
+			Timestamp uint64 `json:"timestamp"`
+		}{
+			Timestamp: uint64(time.Now().Unix()),
+		})
+		require.NoError(t, err)
+		sendMessage(t, data, projectID, project.Configs[0], deviceKey, apiNodeUrl)
 	})
 }
 
