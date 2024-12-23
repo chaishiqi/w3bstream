@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 
 	"github.com/iotexproject/w3bstream/datasource"
@@ -43,6 +44,11 @@ func NewProver(cfg *config.Config, db *db.DB, privateKey *ecdsa.PrivateKey) *Pro
 }
 
 func (p *Prover) Start() error {
+	client, err := ethclient.Dial(p.cfg.ChainEndpoint)
+	if err != nil {
+		return errors.Wrap(err, "failed to dial chain endpoint")
+	}
+
 	if err := monitor.Run(
 		&monitor.Handler{
 			ScannedBlockNumber:       p.db.ScannedBlockNumber,
@@ -56,7 +62,7 @@ func (p *Prover) Start() error {
 			TaskManager: common.HexToAddress(p.cfg.TaskManagerContractAddr),
 		},
 		p.cfg.BeginningBlockNumber,
-		p.cfg.ChainEndpoint,
+		client,
 	); err != nil {
 		return errors.Wrap(err, "failed to run monitor")
 	}

@@ -19,6 +19,8 @@ type Config struct {
 	BeginningBlockNumber         uint64     `env:"BEGINNING_BLOCK_NUMBER,optional"`
 	TaskManagerContractAddr      string     `env:"TASK_MANAGER_CONTRACT_ADDRESS,optional"`
 	IoIDContractAddr             string     `env:"IOID_CONTRACT_ADDRESS,optional"`
+	GeoContractAddr              string     `env:"GEO_CONTRACT_ADDRESS,optional"`
+	StartGeo                     bool       `env:"START_GEO,optional"`
 	LocalDBDir                   string     `env:"LOCAL_DB_DIRECTORY,optional"`
 	env                          string     `env:"-"`
 }
@@ -34,6 +36,8 @@ var defaultTestnetConfig = &Config{
 	BeginningBlockNumber:         28685000,
 	TaskManagerContractAddr:      "0xF0714400a4C0C72007A9F910C5E3007614958636",
 	IoIDContractAddr:             "0x45Ce3E6f526e597628c73B731a3e9Af7Fc32f5b7",
+	GeoContractAddr:              "0x3DC44D11238E54f83DD2bd90c75C45D8Fd6af1b3",
+	StartGeo:                     false,
 	LocalDBDir:                   "./local_db",
 	env:                          "TESTNET",
 }

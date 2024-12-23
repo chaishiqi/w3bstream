@@ -272,12 +272,7 @@ func (c *contract) watch(listedBlockNumber uint64) {
 	}()
 }
 
-func Run(h *Handler, addr *ContractAddr, beginningBlockNumber uint64, chainEndpoint string) error {
-	client, err := ethclient.Dial(chainEndpoint)
-	if err != nil {
-		return errors.Wrap(err, "failed to dial chain endpoint")
-	}
-
+func Run(h *Handler, addr *ContractAddr, beginningBlockNumber uint64, client *ethclient.Client) error {
 	c := &contract{
 		h:                    h,
 		addr:                 addr,

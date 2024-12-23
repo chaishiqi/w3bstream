@@ -6,6 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 
 	"github.com/iotexproject/w3bstream/datasource"
@@ -31,6 +32,11 @@ func NewSequencer(cfg *config.Config, db *db.DB, prv *ecdsa.PrivateKey) *Sequenc
 }
 
 func (s *Sequencer) Start() error {
+	client, err := ethclient.Dial(s.cfg.ChainEndpoint)
+	if err != nil {
+		return errors.Wrap(err, "failed to dial chain endpoint")
+	}
+
 	if err := monitor.Run(
 		&monitor.Handler{
 			ScannedBlockNumber:       s.db.ScannedBlockNumber,
@@ -44,7 +50,7 @@ func (s *Sequencer) Start() error {
 			TaskManager: common.HexToAddress(s.cfg.TaskManagerContractAddr),
 		},
 		s.cfg.BeginningBlockNumber,
-		s.cfg.ChainEndpoint,
+		client,
 	); err != nil {
 		return errors.Wrap(err, "failed to start monitor")
 	}

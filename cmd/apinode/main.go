@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/pkg/errors"
 
 	"github.com/iotexproject/w3bstream/service/apinode"
@@ -27,7 +28,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	apinode := apinode.NewAPINode(cfg, db)
+	prv, err := crypto.HexToECDSA(cfg.PrvKey)
+	if err != nil {
+		log.Fatal(errors.Wrap(err, "failed to parse private key"))
+	}
+
+	apinode := apinode.NewAPINode(cfg, db, prv)
 
 	if err := apinode.Start(); err != nil {
 		log.Fatal(err)

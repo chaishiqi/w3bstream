@@ -47,11 +47,16 @@ func apiNodeInit(chDSN, dbFile, chainEndpoint, taskManagerContractAddr, ioidCont
 		TaskAggregatorIntervalSecond: 1,
 		ProverServiceEndpoint:        "localhost:9002",
 		DatabaseDSN:                  chDSN,
-		PrvKey:                       "",
+		PrvKey:                       "dbfe03b0406549232b8dccc04be8224fcc0afa300a33d4f335dcfdfead861c85",
 		ChainEndpoint:                chainEndpoint,
 		BeginningBlockNumber:         0,
 		TaskManagerContractAddr:      taskManagerContractAddr,
 		IoIDContractAddr:             ioidContractAddr,
+	}
+
+	prv, err := crypto.HexToECDSA(cfg.PrvKey)
+	if err != nil {
+		return nil, "", err
 	}
 
 	db, err := apinodedb.New(dbFile, chDSN)
@@ -59,7 +64,7 @@ func apiNodeInit(chDSN, dbFile, chainEndpoint, taskManagerContractAddr, ioidCont
 		return nil, "", err
 	}
 
-	node := apinode.NewAPINode(&cfg, db)
+	node := apinode.NewAPINode(&cfg, db, prv)
 	return node, fmt.Sprintf("http://localhost%s", cfg.ServiceEndpoint), nil
 }
 

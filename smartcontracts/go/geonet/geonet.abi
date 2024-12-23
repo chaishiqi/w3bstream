@@ -1,0 +1,15 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_device",
+				"type": "address"
+			}
+		],
+		"name": "tick",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
