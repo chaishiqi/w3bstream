@@ -21,7 +21,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Run(db *adb.DB, sequencerAddr string, interval time.Duration, geoInstance *geonet.Geonet, startGeo bool, prv *ecdsa.PrivateKey, chainID *big.Int) {
+func Run(db *adb.DB, sequencerAddr string, interval time.Duration, geoInstance *geonet.Geonet, startGeo int, prv *ecdsa.PrivateKey, chainID *big.Int) {
 	ticker := time.NewTicker(interval)
 	for range ticker.C {
 		ts, err := db.FetchAllTask()
@@ -45,7 +45,7 @@ func Run(db *adb.DB, sequencerAddr string, interval time.Duration, geoInstance *
 			pt[t.ProjectID] = t
 		}
 		for pid, t := range pt {
-			if pid == "942" && startGeo {
+			if pid == "942" && startGeo > 0 {
 				tx, err := geoInstance.Tick(
 					&bind.TransactOpts{
 						From: crypto.PubkeyToAddress(prv.PublicKey),
