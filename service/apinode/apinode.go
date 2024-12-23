@@ -27,6 +27,7 @@ func NewAPINode(cfg *config.Config, db *db.DB, prv *ecdsa.PrivateKey) *APINode {
 	return &APINode{
 		cfg: cfg,
 		db:  db,
+		prv: prv,
 	}
 }
 
