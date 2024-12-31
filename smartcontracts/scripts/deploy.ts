@@ -15,7 +15,9 @@ async function main() {
   }
   if (process.env.DAPP_PROCESSOR) {
   } else {
-    const MockProcessor = await ethers.deployContract('MockProcessor', []);
+    const gnarkVerifier = await ethers.deployContract('Verifier', []);
+    await gnarkVerifier.waitForDeployment();
+    const MockProcessor = await ethers.deployContract('MockProcessor', [gnarkVerifier.target]);
     await MockProcessor.waitForDeployment();
     console.log(`MockProcessor deployed to ${MockProcessor.target}`);
   }

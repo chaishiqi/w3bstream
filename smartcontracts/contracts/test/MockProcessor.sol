@@ -5,6 +5,11 @@ contract MockProcessor {
     error CustomError();
 
     uint8 public errorType;
+    address public verifier;
+
+    constructor(address _verifier) {
+        verifier = _verifier;
+    }
 
     function setErrorType(uint8 _errorType) external {
         errorType = _errorType;
@@ -22,5 +27,14 @@ contract MockProcessor {
         } else if (errorType == 2) {
             revert CustomError();
         }
+        
+        // Prepare function selector
+        bytes4 selector = bytes4(keccak256("verifyProof(uint256[8],uint256[2],uint256[2],uint256[66])"));
+        
+        // Call verifier contract
+        (bool success, ) = verifier.staticcall(abi.encodePacked(selector, _data));
+        require(success, "Verifier call failed");
+    
+        // TODO: cross-validate the public inputs which are the last 66 uint256 values in the _data
     }
 }
