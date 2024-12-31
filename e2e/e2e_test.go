@@ -225,7 +225,8 @@ func TestE2E(t *testing.T) {
 			Timestamp: uint64(time.Now().Unix()),
 		})
 		require.NoError(t, err)
-		sendMessage(t, data, projectID, project.Configs[0], deviceKey, apiNodeUrl)
+		taskid := sendMessage(t, data, projectID, project.Configs[0], deviceKey, apiNodeUrl)
+		waitSettled(t, taskid, apiNodeUrl)
 	})
 }
 
