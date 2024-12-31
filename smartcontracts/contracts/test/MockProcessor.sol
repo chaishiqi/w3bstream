@@ -28,6 +28,9 @@ contract MockProcessor {
             revert CustomError();
         }
         
+        // Validate data length (78 uint256 values = 78 * 32 bytes)
+        require(_data.length == 78 * 32, "Invalid data length");
+
         // Prepare function selector
         bytes4 selector = bytes4(keccak256("verifyProof(uint256[8],uint256[2],uint256[2],uint256[66])"));
         
