@@ -10,9 +10,16 @@ import (
 	"log/slog"
 	"math/big"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
+	"github.com/consensys/gnark-crypto/ecc"
+	"github.com/consensys/gnark/backend/groth16"
+	"github.com/consensys/gnark/backend/witness"
+	"github.com/consensys/gnark/constraint"
+	"github.com/consensys/gnark/frontend"
+	"github.com/consensys/gnark/frontend/cs/r1cs"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -84,6 +91,121 @@ type httpServer struct {
 	db            *db.DB
 	sequencerAddr string
 	proverAddr    string
+}
+
+type CubicCircuitLess struct {
+	X frontend.Variable `gnark:"x"`
+	Y frontend.Variable `gnark:",public"`
+}
+
+func (circuit *CubicCircuitLess) Define(api frontend.API) error {
+	api.AssertIsLessOrEqual(circuit.Y, circuit.X)
+	return nil
+}
+
+type CubicCircuitBigger struct {
+	X frontend.Variable `gnark:"x"`
+	Y frontend.Variable `gnark:",public"`
+}
+
+func (circuit *CubicCircuitBigger) Define(api frontend.API) error {
+	api.AssertIsLessOrEqual(circuit.X, circuit.Y)
+	return nil
+}
+
+type weatherResp struct {
+	OK    bool   `json:"ok"`
+	Less  bool   `json:"less"`
+	Proof []byte `json:"proof"`
+}
+
+func (s *httpServer) weather(c *gin.Context) {
+	temperature := c.Query("temperature")
+	expectedTemperature := c.Query("expected_temperature")
+	temperatureF, err := strconv.ParseFloat(temperature, 64)
+	if err != nil {
+		slog.Error("failed to parse temperature", "error", err)
+		c.JSON(http.StatusOK, &weatherResp{})
+		return
+	}
+	expectedTemperatureF, err := strconv.ParseFloat(expectedTemperature, 64)
+	if err != nil {
+		slog.Error("failed to parse expected temperature", "error", err)
+		c.JSON(http.StatusOK, &weatherResp{})
+		return
+	}
+	t1 := int64(temperatureF)
+	t2 := int64(expectedTemperatureF)
+	var ccs constraint.ConstraintSystem
+	var witness witness.Witness
+	var less bool
+	if t2 <= t1 {
+		less = true
+		var circuit CubicCircuitLess
+		ccs, err = frontend.Compile(ecc.BN254.ScalarField(), r1cs.NewBuilder, &circuit)
+		if err != nil {
+			slog.Error("failed to compile circuit", "error", err)
+			c.JSON(http.StatusOK, &weatherResp{})
+			return
+		}
+		circuit.X = t1
+		circuit.Y = t2
+		witness, err = frontend.NewWitness(&circuit, ecc.BN254.ScalarField())
+		if err != nil {
+			slog.Error("failed to new witness", "error", err)
+			c.JSON(http.StatusOK, &weatherResp{})
+			return
+		}
+	} else {
+		var circuit CubicCircuitBigger
+		ccs, err = frontend.Compile(ecc.BN254.ScalarField(), r1cs.NewBuilder, &circuit)
+		if err != nil {
+			slog.Error("failed to compile circuit", "error", err)
+			c.JSON(http.StatusOK, &weatherResp{})
+			return
+		}
+		circuit.X = t1
+		circuit.Y = t2
+		witness, err = frontend.NewWitness(&circuit, ecc.BN254.ScalarField())
+		if err != nil {
+			slog.Error("failed to new witness", "error", err)
+			c.JSON(http.StatusOK, &weatherResp{})
+			return
+		}
+	}
+	pk, _, err := groth16.Setup(ccs)
+	if err != nil {
+		slog.Error("failed to setup circuit", "error", err)
+		c.JSON(http.StatusOK, &weatherResp{})
+		return
+	}
+	// publicWitness, err := witness.Public()
+	// if err != nil {
+	// 	slog.Error("failed to public witness", "error", err)
+	// 	c.JSON(http.StatusOK, &weatherResp{})
+	// 	return
+	// }
+
+	// groth16: Prove & Verify
+	proof, err := groth16.Prove(ccs, pk, witness)
+	if err != nil {
+		slog.Error("failed to get prove", "error", err)
+		c.JSON(http.StatusOK, &weatherResp{})
+		return
+	}
+	var proofBuf bytes.Buffer
+	_, err = proof.WriteTo(&proofBuf)
+	if err != nil {
+		slog.Error("failed to write prove", "error", err)
+		c.JSON(http.StatusOK, &weatherResp{})
+		return
+	}
+	c.JSON(http.StatusOK, &weatherResp{
+		OK:    true,
+		Less:  less,
+		Proof: proofBuf.Bytes(),
+	})
+	//groth16.Verify(proof, vk, publicWitness)
 }
 
 func (s *httpServer) createTask(c *gin.Context) {
@@ -362,6 +484,7 @@ func Run(p *db.DB, addr, sequencerAddr, proverAddr string) error {
 		proverAddr:    proverAddr,
 	}
 
+	s.engine.GET("/task/weather", s.weather)
 	s.engine.POST("/task", s.createTask)
 	s.engine.GET("/task/:id", s.queryTask)
 	metrics.RegisterMetrics(s.engine)
