@@ -137,7 +137,6 @@ func TestE2E(t *testing.T) {
 	registerIoID(t, chainEndpoint, contracts, deviceKey, projectID)
 
 	t.Run("RISC0", func(t *testing.T) {
-		t.Skip()
 		t.Cleanup(func() {
 			if err := risc0VMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
@@ -173,7 +172,6 @@ func TestE2E(t *testing.T) {
 	})
 
 	t.Run("GNARK", func(t *testing.T) {
-		t.Skip()
 		t.Cleanup(func() {
 			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
@@ -198,7 +196,7 @@ func TestE2E(t *testing.T) {
 		waitSettled(t, taskid, apiNodeUrl)
 	})
 
-	t.Run("GNARK2", func(t *testing.T) {
+	t.Run("GNARK-liveness", func(t *testing.T) {
 		t.Cleanup(func() {
 			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
