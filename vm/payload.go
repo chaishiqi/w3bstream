@@ -20,14 +20,17 @@ var (
 )
 
 func LoadPayload(task *task.Task, projectConfig *project.Config) ([]byte, error) {
-	switch task.ProjectID.String() {
-	case _pebbleProjectID.String():
-		return encodePebblePayload(task, projectConfig)
-	case _geoProjectID.String():
-		return encodeGeodnetPayload(task, projectConfig)
-	default:
+	if projectConfig.VMTypeID != 5 {
 		return task.Payload, nil
 	}
+	// switch task.ProjectID.String() {
+	// case _pebbleProjectID.String():
+	return encodePebblePayload(task, projectConfig)
+	// case _geoProjectID.String():
+	// 	return encodeGeodnetPayload(task, projectConfig)
+	// default:
+	// 	return task.Payload, nil
+	// }
 }
 
 type ProofofLivenessCircuit struct {
