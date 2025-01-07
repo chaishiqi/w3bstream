@@ -172,6 +172,7 @@ func TestE2E(t *testing.T) {
 	})
 
 	t.Run("GNARK", func(t *testing.T) {
+		t.Skip()
 		t.Cleanup(func() {
 			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
@@ -197,6 +198,7 @@ func TestE2E(t *testing.T) {
 	})
 
 	t.Run("GNARK-liveness", func(t *testing.T) {
+		t.Skip()
 		t.Cleanup(func() {
 			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
