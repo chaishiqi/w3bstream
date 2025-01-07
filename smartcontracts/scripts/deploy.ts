@@ -17,9 +17,13 @@ async function main() {
   } else {
     const gnarkVerifier = await ethers.deployContract('Verifier', []);
     await gnarkVerifier.waitForDeployment();
-    const MockProcessor = await ethers.deployContract('MockProcessor', [gnarkVerifier.target]);
-    await MockProcessor.waitForDeployment();
-    console.log(`MockProcessor deployed to ${MockProcessor.target}`);
+    const MockDappLiveness = await ethers.deployContract('MockDappLiveness', [gnarkVerifier.target]);
+    await MockDappLiveness.waitForDeployment();
+    console.log(`MockDappLiveness deployed to ${MockDappLiveness.target}`);
+
+    const MockDapp = await ethers.deployContract('MockDapp', []);
+    await MockDapp.waitForDeployment();
+    console.log(`MockDapp deployed to ${MockDapp.target}`);
   }
   if (process.env.PROJECT_REGISTRATION_FEE) {
     projectRegistrationFee = process.env.PROJECT_REGISTRATION_FEE
