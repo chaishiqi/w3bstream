@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-contract MockProcessor {
+contract MockDapp {
     error CustomError();
 
     uint8 public errorType;

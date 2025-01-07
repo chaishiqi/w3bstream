@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"log"
-	"log/slog"
 	"math/big"
 	"os"
 	"runtime"
@@ -50,7 +49,6 @@ func TestE2E(t *testing.T) {
 
 	// Deploy contract to local chain
 	contracts, err := services.DeployContract(chainEndpoint, payerHex)
-	slog.Error("failed to DeployContract", "error", err)
 	require.NoError(t, err)
 
 	// Setup clickhouse
