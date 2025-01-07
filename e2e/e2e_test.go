@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"encoding/hex"
+	"encoding/json"
 	"log"
 	"math/big"
 	"os"
@@ -134,7 +135,6 @@ func TestE2E(t *testing.T) {
 	registerIoID(t, chainEndpoint, contracts, deviceKey, projectID)
 
 	t.Run("GNARK", func(t *testing.T) {
-		t.Skip()
 		t.Cleanup(func() {
 			if err := gnarkVMContainer.Terminate(context.Background()); err != nil {
 				t.Logf("failed to terminate vm container: %v", err)
@@ -175,7 +175,7 @@ func TestE2E(t *testing.T) {
 		}}}
 
 		// Upload project
-		uploadProject(t, chainEndpoint, ipfsEndpoint, project, &gnarkCodePath, &gnarkMetadataPath, contracts, projectOwnerKey, projectID, false)
+		uploadProject(t, chainEndpoint, ipfsEndpoint, project, &gnarkCodePath, &gnarkMetadataPath, contracts, projectOwnerKey, projectID)
 		require.NoError(t, err)
 
 		// Wait a few seconds for the device info synced on api node
