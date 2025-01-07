@@ -21,9 +21,9 @@ async function main() {
     await MockDappLiveness.waitForDeployment();
     console.log(`MockDappLiveness deployed to ${MockDappLiveness.target}`);
 
-    // const MockDapp = await ethers.deployContract('MockDapp', []);
-    // await MockDapp.waitForDeployment();
-    // console.log(`MockDapp deployed to ${MockDapp.target}`);
+    const MockDapp = await ethers.deployContract('MockDapp', []);
+    await MockDapp.waitForDeployment();
+    console.log(`MockDapp deployed to ${MockDapp.target}`);
   }
   if (process.env.PROJECT_REGISTRATION_FEE) {
     projectRegistrationFee = process.env.PROJECT_REGISTRATION_FEE
