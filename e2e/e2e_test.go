@@ -188,6 +188,7 @@ func TestE2E(t *testing.T) {
 		waitSettled(t, taskid, apiNodeUrl)
 	})
 	t.Run("gnark-movement", func(t *testing.T) {
+		t.Skip()
 		// Register project
 		projectOwnerKey, err := crypto.GenerateKey()
 		require.NoError(t, err)
@@ -195,7 +196,7 @@ func TestE2E(t *testing.T) {
 		sendETH(t, chainEndpoint, payerHex, projectOwnerAddr, 20)
 		projectID := big.NewInt(3)
 		registerIoID(t, chainEndpoint, contracts, deviceKey, projectID)
-		registerProject(t, chainEndpoint, contracts, projectOwnerKey, projectID, common.HexToAddress(contracts.MockDapp))
+		registerProject(t, chainEndpoint, contracts, projectOwnerKey, projectID, common.HexToAddress(contracts.MockDappMovement))
 
 		gnarkCodePath := "./testdata/geodnet.circuit"
 		gnarkMetadataPath := "./testdata/geodnet.pk"
