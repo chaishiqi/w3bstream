@@ -14,23 +14,27 @@ export MIN_STAKE=1.0
 
 #### Testnet
 
-| Contract                   | Address                                    |
-|-----------------------------|--------------------------------------------|
-| W3bstreamProject            | `0x0abec44FC786e8da12267Db5fdeB4311AD1A0A8A` |
-| ProjectRegistrar            | `0x74309Bc83fF7Ba8aBaB901936927976792a6d9B6` |
-| W3bstreamProver             | `0xab6836908d15E42D30bdEf14cbFA4ad45dCAF3a3` |
-| W3bstreamVMType             | `0x5b27FC853058C1e50C252c017e5859AcF854F3b4` |
-| W3bstreamDebits             | `0x0AD341EfF116eeee2451d105133F7759FE4c2e4f` |
-| W3bstreamProjectReward      | `0xfb3E89d1ED4b43F2D4D76400D95f4C158Fc02aC0` |
-| W3bstreamTaskManager        | `0xF0714400a4C0C72007A9F910C5E3007614958636` |
-| W3bstreamRouter             | `0x28E0A99A76a467E7418019cBBbF79E4599C73B5B` |
-| W3bstreamRewardDistributor  | `0x058f2F501EC0505B9CF8AB361FFFBFd36C83a8aF` |
-| W3bstreamMinter             | `0x49C096AE869A3054Db06ffF221b917b41f94CEf3` |
-| LivenessVerifier            | `0x29bBA1515fB2Ae6480bA7086bCb9473044d40b18` |
-| MovementVerifier            | `0xe1FC0a1A75c9243C5Fe0d5ADC32A273C7a26E234` |
-| GeodnetDapp                 | `0xB2Dda5D9E65E44749409E209d8b7b15fb4e82147` |
-
-| Setting                   | Value                                    |
-|-----------------------------|--------------------------------------------|
-| ProjectRegistrar Fee        | `1.0 IOTX`                                      |
-| W3bstreamMinter Reward      | `0 IOTX`                                        |
+LivenessVerifier deployed to 0x2eAfC6918B04DBB70F2E1c19D7667cc800E3238e
+MovementVerifier deployed to 0x2842F0442bA99886503f5d87c9A2868946A433b3
+MockDapp deployed to 0xAA0cB09c6eed8B43DFb0852b4445C2Db86E85A73
+MockDappLiveness deployed to 0x24B8D8f110Be334b36ebBA567a423b052444e66B
+MockDappMovement deployed to 0x799b5dc3fa1F0522F145D37f939187c926f035Bb
+W3bstreamProject deployed to 0x7D3158166E9298fC47beA036fE162fEA17632E5D
+ProjectRegistrar deployed to 0xB564996622CE5610b9cF4ed35160f406185d7d0b
+W3bstreamProject binder set to ProjectRegistrar 0xB564996622CE5610b9cF4ed35160f406185d7d0b
+ProjectRegistrar registration fee set to 0.0
+W3bstreamProver deployed to 0x7EdDe171F0944252b5A2CCE5Ef0eD7e13310F67F
+W3bstreamVMType deployed to 0x2Fb953ca5e7E693a8Ce2C2E26dAE33616980Bc7b
+W3bstreamDebits deployed to 0x862116BBBBD18Af494A2680D5430C25A9C47ad0a
+W3bstreamProjectReward deployed to 0x65EE0E96D0818aD43d93ae8089Db5F0d658c0cCc
+W3bstreamTaskManager deployed to 0xEe96E984E6e746aAbe4a5ef687Ad8bb2aA98bDf3
+W3bstreamRouter deployed to 0x19dD7163Ad80fE550C97Affef49E1995B24941B1
+W3bstreamRewardDistributor deployed to 0xe8d9ccb6e7E1c834A1E2E1a6dF3403773eAa580e
+W3bstreamMinter deployed to 0x7cE64E8a918C9B8b6172043Bb50E99A9AFf72cd1
+MockIoID deployed to 0xDF505e158Ffe093601494D931924Bb24E8B7B92D
+W3bstreamRewardDistributor add operator to 0x7cE64E8a918C9B8b6172043Bb50E99A9AFf72cd1
+W3bstreamTaskManager add operator to 0x7cE64E8a918C9B8b6172043Bb50E99A9AFf72cd1
+W3bstreamTaskManager add operator to 0x19dD7163Ad80fE550C97Affef49E1995B24941B1
+W3bstreamRewardDistributor set operator to 0x7cE64E8a918C9B8b6172043Bb50E99A9AFf72cd1
+W3bstreamDebits set operator to 0xEe96E984E6e746aAbe4a5ef687Ad8bb2aA98bDf3
+W3bstreamMinter set reward to 0
