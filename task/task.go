@@ -19,6 +19,8 @@ type Task struct {
 	DevicePubKey   []byte      `json:"devicePublicKey"`
 	Payload        []byte      `json:"payload"`
 	Signature      []byte      `json:"signature,omitempty"`
+	PayloadHash    common.Hash `json:"payloadHash,omitempty"`
+	TaskHash       common.Hash `json:"taskHash,omitempty"`
 	PrevTask       *Task       `json:"previousTask,omitempty"`
 }
 

@@ -102,6 +102,8 @@ func (p *Clickhouse) conv(dt *db.Task) (*task.Task, error) {
 		DevicePubKey:   pubkey,
 		Payload:        []byte(dt.Payload),
 		Signature:      sig,
+		PayloadHash:    common.HexToHash(dt.PayloadHash),
+		TaskHash:       common.HexToHash(dt.TaskHash),
 	}, nil
 }
 

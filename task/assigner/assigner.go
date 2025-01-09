@@ -57,10 +57,6 @@ func (r *assigner) assign(tids []common.Hash) error {
 	for _, t := range ts {
 		prover := provers[rand.Intn(len(provers))]
 
-		th, err := t.Hash()
-		if err != nil {
-			return errors.Wrap(err, "failed to hash task")
-		}
 		sig := t.Signature
 		sig[64] += 27
 
@@ -68,7 +64,7 @@ func (r *assigner) assign(tids []common.Hash) error {
 			ProjectId: t.ProjectID,
 			TaskId:    t.ID,
 			Prover:    prover,
-			Hash:      th,
+			Hash:      t.TaskHash,
 			Signature: sig,
 		})
 	}

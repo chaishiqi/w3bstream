@@ -99,7 +99,9 @@ contract W3bstreamTaskManager is OwnableUpgradeable, ITaskManager {
         address taskOwner = hash.recover(signature);
         uint256 rewardAmount = projectReward.rewardAmount(taskOwner, projectId);
         address rewardToken = projectReward.rewardToken(projectId);
-        debits.withhold(rewardToken, taskOwner, rewardAmount);
+        if (rewardToken != address(0) && rewardAmount > 0) {
+            debits.withhold(rewardToken, taskOwner, rewardAmount);
+        }
         Record storage record = records[projectId][taskId];
         require(record.settled == false, "task already settled");
         if (record.prover != address(0)) {

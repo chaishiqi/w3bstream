@@ -2,65 +2,60 @@
   "manifestVersion": "3.2",
   "proxies": [
     {
-      "address": "0x0abec44FC786e8da12267Db5fdeB4311AD1A0A8A",
-      "txHash": "0x189953b7502ca6641d27f00bc9761e92c85d97920df180becfa346a0804ffc69",
+      "address": "0x7D3158166E9298fC47beA036fE162fEA17632E5D",
+      "txHash": "0x1de987044197e75f57fc38d5b72e45e178beec2df218351ceb711c265f26198b",
       "kind": "transparent"
     },
     {
-      "address": "0x74309Bc83fF7Ba8aBaB901936927976792a6d9B6",
-      "txHash": "0x03b4d4cb02d646197ef821cf864668d31befad86afcc5e8be823e33c4447118e",
+      "address": "0xB564996622CE5610b9cF4ed35160f406185d7d0b",
+      "txHash": "0x7377a4564ed329cfdf58602a55156da52c3aa1cb39b15a2025e949a68fc46fd7",
       "kind": "transparent"
     },
     {
-      "address": "0xab6836908d15E42D30bdEf14cbFA4ad45dCAF3a3",
-      "txHash": "0x4a8a3acf264abd53f0fade50505559340af4d66970e68f5d46dcf5b9ad00fccc",
+      "address": "0x7EdDe171F0944252b5A2CCE5Ef0eD7e13310F67F",
+      "txHash": "0x4e318011ca29f72dc70edad3fc7457bf51d02a50a44dacc81f96e83bce5723a1",
       "kind": "transparent"
     },
     {
-      "address": "0x5b27FC853058C1e50C252c017e5859AcF854F3b4",
-      "txHash": "0xf4c0b24789d85ceddae684f4ae6373a32192c831ac98da4af7a47c3126bc595d",
+      "address": "0x2Fb953ca5e7E693a8Ce2C2E26dAE33616980Bc7b",
+      "txHash": "0xf768b1602b61ee75639b6db1f738bb6bb7c19831c8ac1a22700b71907da5e381",
       "kind": "transparent"
     },
     {
-      "address": "0x0AD341EfF116eeee2451d105133F7759FE4c2e4f",
-      "txHash": "0x8b0e20406cbbee8cc2023c1c9d2266fea76f6133aab534c1e0bdc6af86eccc12",
+      "address": "0x862116BBBBD18Af494A2680D5430C25A9C47ad0a",
+      "txHash": "0x2dc1ca15ef5dd480b488a7a22157085c539bd0fc4afa185ab2fd48cde6d88603",
       "kind": "transparent"
     },
     {
-      "address": "0xfb3E89d1ED4b43F2D4D76400D95f4C158Fc02aC0",
-      "txHash": "0xa3acee29ccad0e9bc239424373e9aff075c20e12a5c843b57996162c794effd1",
+      "address": "0x65EE0E96D0818aD43d93ae8089Db5F0d658c0cCc",
+      "txHash": "0xb332c12eba0d312830d50b598a7949a8396679ae7cfce22d2b0b7ca8eed6cc01",
       "kind": "transparent"
     },
     {
-      "address": "0xF0714400a4C0C72007A9F910C5E3007614958636",
-      "txHash": "0x327443b6cc2935314d732665215572c25f9d310f55a4975b0c35ecb8a54f022c",
+      "address": "0xEe96E984E6e746aAbe4a5ef687Ad8bb2aA98bDf3",
+      "txHash": "0x37392de00677696c34b3d18d5af7dcd32c7615b262bc47ebf7822ad1840e35a9",
       "kind": "transparent"
     },
     {
-      "address": "0x28E0A99A76a467E7418019cBBbF79E4599C73B5B",
-      "txHash": "0xcc7fdcd7b9a906b03a9326d81e0c32c92dd9045e96229cf57845710e01fc875e",
+      "address": "0x19dD7163Ad80fE550C97Affef49E1995B24941B1",
+      "txHash": "0xa20f0d8a5ed67a3526fecc77fd2c25e7bb1b76681ce0b751d6a8a5a7baa7ca7a",
       "kind": "transparent"
     },
     {
-      "address": "0x058f2F501EC0505B9CF8AB361FFFBFd36C83a8aF",
-      "txHash": "0x4edda49c73eadde25dbc86f392076f7ff7f00fd58e440d76d5c8cd181c1cf3d0",
+      "address": "0xe8d9ccb6e7E1c834A1E2E1a6dF3403773eAa580e",
+      "txHash": "0x8e12c9ed8d7bbf8f668de755c276da92c73270e9c27115e708b982c441d1e42b",
       "kind": "transparent"
     },
     {
-      "address": "0x49C096AE869A3054Db06ffF221b917b41f94CEf3",
-      "txHash": "0x519310878f96696cf48969a5a1e94c630c13187ca8782556a14205f28099d4e6",
-      "kind": "transparent"
-    },
-    {
-      "address": "0x503BE87Bc613076819aDe916Bde0D394e5F8A36e",
-      "txHash": "0xb8874cf279a4ea328f2d996391555125fbb62330d8ffe351d278d431e25cc75d",
+      "address": "0x7cE64E8a918C9B8b6172043Bb50E99A9AFf72cd1",
+      "txHash": "0xa5c736fbd8483bbcb591fe02e49408a96c799c2d822f01319a6c8f6b7fef6230",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "f77b0a826d027b8e55f126b970860ee32ec7b3b279e461368370ece8b36b5642": {
-      "address": "0xB5f1E83F8c6271c5319AE8eB41d6037799a28eB4",
-      "txHash": "0x7b3f849528d2157f5185523d4f788f6680ce1f19643b83e8cc126c39fde252dd",
+    "6a4e240988d2942c661f5c3748ed6791529f3c1350c4b89a46cc7d5d61c5aca8": {
+      "address": "0xe190450fBAc70a4cdd4eFbFDDE14cbb73Ece1D11",
+      "txHash": "0x5dee4eb18116ee95764c7e7aca9b80ebd1263aed5ffb1a0b1bb197acbe3b1267",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -111,15 +106,15 @@
             "slot": "101",
             "type": "t_mapping(t_uint256,t_bool)",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:20"
+            "src": "contracts/W3bstreamProject.sol:22"
           },
           {
             "label": "projectConfigs",
             "offset": 0,
             "slot": "102",
-            "type": "t_mapping(t_uint256,t_struct(ProjectConfig)7806_storage)",
+            "type": "t_mapping(t_uint256,t_struct(ProjectConfig)824_storage)",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:21"
+            "src": "contracts/W3bstreamProject.sol:23"
           },
           {
             "label": "paused",
@@ -127,7 +122,7 @@
             "slot": "103",
             "type": "t_mapping(t_uint256,t_bool)",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:22"
+            "src": "contracts/W3bstreamProject.sol:24"
           },
           {
             "label": "attributes",
@@ -135,15 +130,15 @@
             "slot": "104",
             "type": "t_mapping(t_uint256,t_mapping(t_bytes32,t_bytes_storage))",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:23"
+            "src": "contracts/W3bstreamProject.sol:25"
           },
           {
             "label": "project",
             "offset": 0,
             "slot": "105",
-            "type": "t_contract(IERC721)4786",
+            "type": "t_contract(IERC721)798",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:25"
+            "src": "contracts/W3bstreamProject.sol:27"
           },
           {
             "label": "binder",
@@ -151,7 +146,7 @@
             "slot": "106",
             "type": "t_address",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:26"
+            "src": "contracts/W3bstreamProject.sol:28"
           },
           {
             "label": "count",
@@ -159,7 +154,7 @@
             "slot": "107",
             "type": "t_uint256",
             "contract": "W3bstreamProject",
-            "src": "contracts/W3bstreamProject.sol:27"
+            "src": "contracts/W3bstreamProject.sol:29"
           }
         ],
         "types": {
@@ -187,7 +182,7 @@
             "label": "bytes",
             "numberOfBytes": "32"
           },
-          "t_contract(IERC721)4786": {
+          "t_contract(IERC721)798": {
             "label": "contract IERC721",
             "numberOfBytes": "20"
           },
@@ -203,7 +198,7 @@
             "label": "mapping(uint256 => mapping(bytes32 => bytes))",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(ProjectConfig)7806_storage)": {
+          "t_mapping(t_uint256,t_struct(ProjectConfig)824_storage)": {
             "label": "mapping(uint256 => struct W3bstreamProject.ProjectConfig)",
             "numberOfBytes": "32"
           },
@@ -211,7 +206,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(ProjectConfig)7806_storage": {
+          "t_struct(ProjectConfig)824_storage": {
             "label": "struct W3bstreamProject.ProjectConfig",
             "members": [
               {
@@ -242,8 +237,8 @@
       }
     },
     "24b1eb59f026808634281557e224dc41bc05cf028204a2977e18d9f0e46c5cfe": {
-      "address": "0x74BFcd4D7E1EaF9810D8Ad3eBcb91FB30D138e7a",
-      "txHash": "0x6228f80787c09236e3fabec38a6ae05a1faed715c7efc1b8af152d783445cd51",
+      "address": "0xF6b4Ac39D8927CbC22E443252Bc012638b2e11B1",
+      "txHash": "0x9a039f08a28e72a399c49b00c7442a136e0f64441caba3fb5ba3ade38e8ae936",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -300,7 +295,7 @@
             "label": "projectStore",
             "offset": 0,
             "slot": "102",
-            "type": "t_contract(IProjectStore)7076",
+            "type": "t_contract(IProjectStore)11045",
             "contract": "ProjectRegistrar",
             "src": "contracts/ProjectRegistrar.sol:16"
           }
@@ -322,7 +317,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IProjectStore)7076": {
+          "t_contract(IProjectStore)11045": {
             "label": "contract IProjectStore",
             "numberOfBytes": "20"
           },
@@ -339,8 +334,8 @@
       }
     },
     "ec8942e1c890b65d9abb7ea9196635a7c9cb19c1fdd56af7602708e6e80b3d56": {
-      "address": "0x73860AF9776f19b2e63C04e2b63C2FD7A56f103a",
-      "txHash": "0xd1ad90ae17f528c3521ed5b7e492e9a3cd2fede33d4f88b77e400ce1610259a2",
+      "address": "0x507eFCef9e22134Dedf3Ce87F575bbd912C8B39F",
+      "txHash": "0x3ded9e3ae69b3f3fd265f38b013ab95db8b7bc295b2685401864f9336bc2c593",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -472,8 +467,8 @@
       }
     },
     "d68357da25e4667438c1c206f3ab6d35c8c8d1e0cb1e60afdef899a952abd1a4": {
-      "address": "0x9aaC78Cf1d2B84Ed92A5E5d064322F7a64eFcc7A",
-      "txHash": "0xb3adefc5d66ab3f86017d55ad80e4f68fd659635546d336521c2e5ab67b0124f",
+      "address": "0x2FDCA4C481Cb62F320aB87BD356EA586C0054b94",
+      "txHash": "0x90121a7b2b2c5b33ffc2fc73f2bfb51409c8e15a9fd6c55862dfade26bf921e7",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -669,8 +664,8 @@
       }
     },
     "f183996731a8c24a265d15b0846549c012ebde502af0deaafc0e348c012ccec9": {
-      "address": "0xa2ef277425E2F65d299F43F51eF9af78C4d96332",
-      "txHash": "0x05e8fba58094c06bf6e3b94809c707094fbb36910d87ab19420ce753e45a2615",
+      "address": "0x4c4b782a8FF59Ba9eF0FBdDB77C77023203E9e23",
+      "txHash": "0x8ee229a32d2e11e3098d4ecff6eef1d4616f61b26eb818ca074c60a580ecca61",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -778,8 +773,8 @@
       }
     },
     "185f85914766a4009698fd0aa26e62368e9c8625b2df77fd27e47830348e710d": {
-      "address": "0x4DE53cCdE94ABF3Ba8d5A66b9056305D484153f0",
-      "txHash": "0xeb324bd03ef7f199ff2892faa9247e9e82eacbeaab25d89993f05f09b8312185",
+      "address": "0x9677605339cDcE42Bb57a83470B289A79B6cE18c",
+      "txHash": "0x82fc272a2b35986c4974486176da0bab6b48a3386d34a7f645426950ac685291",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -899,8 +894,8 @@
       }
     },
     "2e3f692ac04693824c19a5a6e1528ef8976d154d64e3ddbbd5219d7bd277a077": {
-      "address": "0xC70cdc9b0A2E8423514eC0CF5d09c0Cc67F8809C",
-      "txHash": "0x181d0e9451aee40985ff4e8b579c8d0ec853252b67239cf30a0586078b3bcd76",
+      "address": "0xbC1776727a974B2e3e51503d0a1FFf0F7ebE650e",
+      "txHash": "0xd65bd472ea1df7c941984627de43d33e6bdb20c8821ea78ab212b48b820fd284",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -949,7 +944,7 @@
             "label": "records",
             "offset": 0,
             "slot": "101",
-            "type": "t_mapping(t_uint256,t_mapping(t_bytes32,t_struct(Record)9181_storage))",
+            "type": "t_mapping(t_uint256,t_mapping(t_bytes32,t_struct(Record)13150_storage))",
             "contract": "W3bstreamTaskManager",
             "src": "contracts/W3bstreamTaskManager.sol:54"
           },
@@ -965,7 +960,7 @@
             "label": "debits",
             "offset": 0,
             "slot": "103",
-            "type": "t_contract(IDebits)9213",
+            "type": "t_contract(IDebits)13182",
             "contract": "W3bstreamTaskManager",
             "src": "contracts/W3bstreamTaskManager.sol:56"
           },
@@ -973,7 +968,7 @@
             "label": "projectReward",
             "offset": 0,
             "slot": "104",
-            "type": "t_contract(IProjectReward)9237",
+            "type": "t_contract(IProjectReward)13206",
             "contract": "W3bstreamTaskManager",
             "src": "contracts/W3bstreamTaskManager.sol:57"
           },
@@ -981,7 +976,7 @@
             "label": "proverStore",
             "offset": 0,
             "slot": "105",
-            "type": "t_contract(IProverStore)9259",
+            "type": "t_contract(IProverStore)13228",
             "contract": "W3bstreamTaskManager",
             "src": "contracts/W3bstreamTaskManager.sol:58"
           }
@@ -1007,15 +1002,15 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IDebits)9213": {
+          "t_contract(IDebits)13182": {
             "label": "contract IDebits",
             "numberOfBytes": "20"
           },
-          "t_contract(IProjectReward)9237": {
+          "t_contract(IProjectReward)13206": {
             "label": "contract IProjectReward",
             "numberOfBytes": "20"
           },
-          "t_contract(IProverStore)9259": {
+          "t_contract(IProverStore)13228": {
             "label": "contract IProverStore",
             "numberOfBytes": "20"
           },
@@ -1023,15 +1018,15 @@
             "label": "mapping(address => bool)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_bytes32,t_struct(Record)9181_storage)": {
+          "t_mapping(t_bytes32,t_struct(Record)13150_storage)": {
             "label": "mapping(bytes32 => struct Record)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_mapping(t_bytes32,t_struct(Record)9181_storage))": {
+          "t_mapping(t_uint256,t_mapping(t_bytes32,t_struct(Record)13150_storage))": {
             "label": "mapping(uint256 => mapping(bytes32 => struct Record))",
             "numberOfBytes": "32"
           },
-          "t_struct(Record)9181_storage": {
+          "t_struct(Record)13150_storage": {
             "label": "struct Record",
             "members": [
               {
@@ -1097,9 +1092,9 @@
         "namespaces": {}
       }
     },
-    "5838b4d6b4a0e5771e09ab823b34b6f99add7f5aa664fcaf3d73e12682e82083": {
-      "address": "0x3d3E56aC897D41F1F2DD28Cb8E33a4Ee1887AC88",
-      "txHash": "0x5063016d489093e1c372efce3da4179df42e19bb03cd58b1194bf513a9825999",
+    "a6c1f29bac17ac6f7ece5346deebc63bd7c738c2393bebe5b5d2407fd036e5ba": {
+      "address": "0xeB19F14Aa6DD0fB392eeB6F7A792bEA8e2226B32",
+      "txHash": "0xacfb58672282c23a8578e2b1b4c219eb5f4fe529556140000e25d613fc7349ba",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -1124,17 +1119,17 @@
             "label": "taskManager",
             "offset": 2,
             "slot": "0",
-            "type": "t_contract(ITaskManager)10202",
+            "type": "t_contract(ITaskManager)1627",
             "contract": "W3bstreamRouter",
-            "src": "contracts/W3bstreamRouter.sol:20"
+            "src": "contracts/W3bstreamRouter.sol:21"
           },
           {
             "label": "proverStore",
             "offset": 0,
             "slot": "1",
-            "type": "t_contract(IProverStore)8977",
+            "type": "t_contract(IProverStore)1339",
             "contract": "W3bstreamRouter",
-            "src": "contracts/W3bstreamRouter.sol:21"
+            "src": "contracts/W3bstreamRouter.sol:22"
           },
           {
             "label": "projectStore",
@@ -1142,7 +1137,7 @@
             "slot": "2",
             "type": "t_address",
             "contract": "W3bstreamRouter",
-            "src": "contracts/W3bstreamRouter.sol:22"
+            "src": "contracts/W3bstreamRouter.sol:23"
           },
           {
             "label": "dapp",
@@ -1150,7 +1145,7 @@
             "slot": "3",
             "type": "t_mapping(t_uint256,t_address)",
             "contract": "W3bstreamRouter",
-            "src": "contracts/W3bstreamRouter.sol:24"
+            "src": "contracts/W3bstreamRouter.sol:25"
           }
         ],
         "types": {
@@ -1162,11 +1157,11 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IProverStore)8977": {
+          "t_contract(IProverStore)1339": {
             "label": "contract IProverStore",
             "numberOfBytes": "20"
           },
-          "t_contract(ITaskManager)10202": {
+          "t_contract(ITaskManager)1627": {
             "label": "contract ITaskManager",
             "numberOfBytes": "20"
           },
@@ -1187,8 +1182,8 @@
       }
     },
     "c18363a0182ec7eeba6c1a8434135de933ca026103166e420ca33a91be83f664": {
-      "address": "0x8bCf5A627d40033640fd1e886715a7a638F59DE3",
-      "txHash": "0x5d77f9e280722f197e4eabb29092eca7ea3ac465aa1fcd5645f5444fc03c684e",
+      "address": "0x197d2CB14231b951bcf12514cD3748368a6aa527",
+      "txHash": "0xf8f17e31e1e26ad1c61c946a023cd3683bf2518f8986f11929c352c1fb3e16f3",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -1272,8 +1267,8 @@
       }
     },
     "f3b7b8bbeeb2293275d6b791f6bc2d33c71950e5bf9a73cc9b432924bdca49eb": {
-      "address": "0x17704F5d8396e62057385CF03f4603C536B020EB",
-      "txHash": "0x10e7c94513b3e85396ff38c12ac1ecca545ee197c2df1b831a5ec23bc247e8bc",
+      "address": "0x86d37b31DA86678624c828714859D5E04a0af758",
+      "txHash": "0x29f12f5e5b99c5d5fb4c0d2a8f3677712b630313a04f599f8e09480b1f9c1206",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -1322,7 +1317,7 @@
             "label": "taskManager",
             "offset": 0,
             "slot": "101",
-            "type": "t_contract(ITaskManager)10202",
+            "type": "t_contract(ITaskManager)14171",
             "contract": "W3bstreamMinter",
             "src": "contracts/W3bstreamMinter.sol:22"
           },
@@ -1330,7 +1325,7 @@
             "label": "distributor",
             "offset": 0,
             "slot": "102",
-            "type": "t_contract(IRewardDistributor)7638",
+            "type": "t_contract(IRewardDistributor)11607",
             "contract": "W3bstreamMinter",
             "src": "contracts/W3bstreamMinter.sol:23"
           },
@@ -1368,11 +1363,11 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IRewardDistributor)7638": {
+          "t_contract(IRewardDistributor)11607": {
             "label": "contract IRewardDistributor",
             "numberOfBytes": "20"
           },
-          "t_contract(ITaskManager)10202": {
+          "t_contract(ITaskManager)14171": {
             "label": "contract ITaskManager",
             "numberOfBytes": "20"
           },
@@ -1388,9 +1383,9 @@
         "namespaces": {}
       }
     },
-    "90163da91636b9cee9f9c98f9a1f55a78188bec91f112511787dc073b1b24ded": {
-      "address": "0xde7fd412094e9112c20efFa62552b59332d90d3c",
-      "txHash": "0xd7bb93ad1979c971ea3703a18ae2fc41ea7945a9a6add81c541236e98fd13836",
+    "5f1c665a920ef3838ff0295d30717bd439d38f7c342653f988bb7b15c1503bba": {
+      "address": "0x5538Bf2230c1bd58aDA7a58C4A81348EDaB9f42d",
+      "txHash": "0xab8b7f7138c9e6c0722de73d3694b39c41bb26a20857bec2d3feab707730f5d5",
       "layout": {
         "solcVersion": "0.8.19",
         "storage": [
@@ -1574,290 +1569,6 @@
               }
             ],
             "numberOfBytes": "256"
-          },
-          "t_uint256": {
-            "label": "uint256",
-            "numberOfBytes": "32"
-          },
-          "t_uint8": {
-            "label": "uint8",
-            "numberOfBytes": "1"
-          }
-        },
-        "namespaces": {}
-      }
-    },
-    "0cf2215b4806793c323426701a60188e44a2a75c04560558424be91c01c98a05": {
-      "address": "0x254a4FCCFE69C41eA588A54c08390523fcD0467C",
-      "txHash": "0x55c461f07b18ca6a19f86c8f3962d01a6e08140a743bda24de055618f7d0ffe1",
-      "layout": {
-        "solcVersion": "0.8.19",
-        "storage": [
-          {
-            "label": "_initialized",
-            "offset": 0,
-            "slot": "0",
-            "type": "t_uint8",
-            "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
-            "retypedFrom": "bool"
-          },
-          {
-            "label": "_initializing",
-            "offset": 1,
-            "slot": "0",
-            "type": "t_bool",
-            "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
-          },
-          {
-            "label": "__gap",
-            "offset": 0,
-            "slot": "1",
-            "type": "t_array(t_uint256)50_storage",
-            "contract": "ContextUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:40"
-          },
-          {
-            "label": "_owner",
-            "offset": 0,
-            "slot": "51",
-            "type": "t_address",
-            "contract": "OwnableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
-          },
-          {
-            "label": "__gap",
-            "offset": 0,
-            "slot": "52",
-            "type": "t_array(t_uint256)49_storage",
-            "contract": "OwnableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
-          },
-          {
-            "label": "records",
-            "offset": 0,
-            "slot": "101",
-            "type": "t_mapping(t_uint256,t_mapping(t_bytes32,t_struct(Record)2273_storage))",
-            "contract": "W3bstreamTaskManager",
-            "src": "contracts/W3bstreamTaskManager.sol:54"
-          },
-          {
-            "label": "operators",
-            "offset": 0,
-            "slot": "102",
-            "type": "t_mapping(t_address,t_bool)",
-            "contract": "W3bstreamTaskManager",
-            "src": "contracts/W3bstreamTaskManager.sol:55"
-          },
-          {
-            "label": "debits",
-            "offset": 0,
-            "slot": "103",
-            "type": "t_contract(IDebits)2305",
-            "contract": "W3bstreamTaskManager",
-            "src": "contracts/W3bstreamTaskManager.sol:56"
-          },
-          {
-            "label": "projectReward",
-            "offset": 0,
-            "slot": "104",
-            "type": "t_contract(IProjectReward)2329",
-            "contract": "W3bstreamTaskManager",
-            "src": "contracts/W3bstreamTaskManager.sol:57"
-          },
-          {
-            "label": "proverStore",
-            "offset": 0,
-            "slot": "105",
-            "type": "t_contract(IProverStore)2351",
-            "contract": "W3bstreamTaskManager",
-            "src": "contracts/W3bstreamTaskManager.sol:58"
-          }
-        ],
-        "types": {
-          "t_address": {
-            "label": "address",
-            "numberOfBytes": "20"
-          },
-          "t_array(t_uint256)49_storage": {
-            "label": "uint256[49]",
-            "numberOfBytes": "1568"
-          },
-          "t_array(t_uint256)50_storage": {
-            "label": "uint256[50]",
-            "numberOfBytes": "1600"
-          },
-          "t_bool": {
-            "label": "bool",
-            "numberOfBytes": "1"
-          },
-          "t_bytes32": {
-            "label": "bytes32",
-            "numberOfBytes": "32"
-          },
-          "t_contract(IDebits)2305": {
-            "label": "contract IDebits",
-            "numberOfBytes": "20"
-          },
-          "t_contract(IProjectReward)2329": {
-            "label": "contract IProjectReward",
-            "numberOfBytes": "20"
-          },
-          "t_contract(IProverStore)2351": {
-            "label": "contract IProverStore",
-            "numberOfBytes": "20"
-          },
-          "t_mapping(t_address,t_bool)": {
-            "label": "mapping(address => bool)",
-            "numberOfBytes": "32"
-          },
-          "t_mapping(t_bytes32,t_struct(Record)2273_storage)": {
-            "label": "mapping(bytes32 => struct Record)",
-            "numberOfBytes": "32"
-          },
-          "t_mapping(t_uint256,t_mapping(t_bytes32,t_struct(Record)2273_storage))": {
-            "label": "mapping(uint256 => mapping(bytes32 => struct Record))",
-            "numberOfBytes": "32"
-          },
-          "t_struct(Record)2273_storage": {
-            "label": "struct Record",
-            "members": [
-              {
-                "label": "hash",
-                "type": "t_bytes32",
-                "offset": 0,
-                "slot": "0"
-              },
-              {
-                "label": "owner",
-                "type": "t_address",
-                "offset": 0,
-                "slot": "1"
-              },
-              {
-                "label": "sequencer",
-                "type": "t_address",
-                "offset": 0,
-                "slot": "2"
-              },
-              {
-                "label": "prover",
-                "type": "t_address",
-                "offset": 0,
-                "slot": "3"
-              },
-              {
-                "label": "rewardForProver",
-                "type": "t_uint256",
-                "offset": 0,
-                "slot": "4"
-              },
-              {
-                "label": "rewardForSequencer",
-                "type": "t_uint256",
-                "offset": 0,
-                "slot": "5"
-              },
-              {
-                "label": "deadline",
-                "type": "t_uint256",
-                "offset": 0,
-                "slot": "6"
-              },
-              {
-                "label": "settled",
-                "type": "t_bool",
-                "offset": 0,
-                "slot": "7"
-              }
-            ],
-            "numberOfBytes": "256"
-          },
-          "t_uint256": {
-            "label": "uint256",
-            "numberOfBytes": "32"
-          },
-          "t_uint8": {
-            "label": "uint8",
-            "numberOfBytes": "1"
-          }
-        },
-        "namespaces": {}
-      }
-    },
-    "9099e226a8eb73d7bc4d083a8695b7304839c140d4586c639673ce8e4cb1fe30": {
-      "address": "0xf029a08BCC5905a13BfDd53e287D7f47E5Df3fBC",
-      "txHash": "0xcb40fb262c14829020d10088d1be9c7aaaedc554aca5bebdcf3a1e06ef05f636",
-      "layout": {
-        "solcVersion": "0.8.19",
-        "storage": [
-          {
-            "label": "_initialized",
-            "offset": 0,
-            "slot": "0",
-            "type": "t_uint8",
-            "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
-            "retypedFrom": "bool"
-          },
-          {
-            "label": "_initializing",
-            "offset": 1,
-            "slot": "0",
-            "type": "t_bool",
-            "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
-          },
-          {
-            "label": "ioIDRegistry",
-            "offset": 2,
-            "slot": "0",
-            "type": "t_contract(IioIDRegistry)6818",
-            "contract": "ProjectDevice",
-            "src": "contracts/ProjectDevice.sol:24"
-          },
-          {
-            "label": "w3bstreamProject",
-            "offset": 0,
-            "slot": "1",
-            "type": "t_contract(IW3bstreamProject)6833",
-            "contract": "ProjectDevice",
-            "src": "contracts/ProjectDevice.sol:25"
-          },
-          {
-            "label": "devices",
-            "offset": 0,
-            "slot": "2",
-            "type": "t_mapping(t_uint256,t_mapping(t_address,t_bool))",
-            "contract": "ProjectDevice",
-            "src": "contracts/ProjectDevice.sol:27"
-          }
-        ],
-        "types": {
-          "t_address": {
-            "label": "address",
-            "numberOfBytes": "20"
-          },
-          "t_bool": {
-            "label": "bool",
-            "numberOfBytes": "1"
-          },
-          "t_contract(IW3bstreamProject)6833": {
-            "label": "contract IW3bstreamProject",
-            "numberOfBytes": "20"
-          },
-          "t_contract(IioIDRegistry)6818": {
-            "label": "contract IioIDRegistry",
-            "numberOfBytes": "20"
-          },
-          "t_mapping(t_address,t_bool)": {
-            "label": "mapping(address => bool)",
-            "numberOfBytes": "32"
-          },
-          "t_mapping(t_uint256,t_mapping(t_address,t_bool))": {
-            "label": "mapping(uint256 => mapping(address => bool))",
-            "numberOfBytes": "32"
           },
           "t_uint256": {
             "label": "uint256",
