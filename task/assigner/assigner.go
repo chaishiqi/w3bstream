@@ -58,7 +58,7 @@ func (r *assigner) assign(tids []common.Hash) error {
 		prover := provers[rand.Intn(len(provers))]
 
 		sig := t.Signature
-		//sig[64] += 27
+		sig[64] += 27
 
 		tas = append(tas, minter.TaskAssignment{
 			ProjectId: t.ProjectID,
