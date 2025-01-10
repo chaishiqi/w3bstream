@@ -114,7 +114,7 @@ func encodeMovementPayload(task *task.Task, projectConfig *project.Config) ([]by
 	curLongitude := curData[2].(uint64)
 	curSig := task.Signature[:64]
 	isMove := uint64(0)
-	if (abs(lastLatitude, curLatitude) > 10^3) || (abs(lastLongitude, curLongitude) > 10^3) {
+	if (abs(lastLatitude, curLatitude) > 1_000) || (abs(lastLongitude, curLongitude) > 1_000) {
 		isMove = 1
 	}
 

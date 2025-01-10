@@ -162,7 +162,9 @@ contract W3bstreamTaskManager is OwnableUpgradeable, ITaskManager {
         recipients[1] = record.sequencer;
         amounts[1] = record.rewardForSequencer;
         address rewardToken = IProjectReward(projectReward).rewardToken(projectId);
-        debits.distribute(rewardToken, record.owner, recipients, amounts);
+        if (rewardToken != address(0)) {
+            debits.distribute(rewardToken, record.owner, recipients, amounts);
+        }
     }
 
     function recall(uint256 projectId, bytes32 taskId) public {
