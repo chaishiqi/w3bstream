@@ -29,29 +29,30 @@ func Run(projectManager *project.Manager, db *apidb.DB, sequencerAddr string, in
 			continue
 		}
 
-		tasksByProject := make(map[string][]*apidb.Task)
+		taskMap := make(map[string][]*apidb.Task)
 		for i := range ts {
-			tasksByProject[ts[i].ProjectID] = append(tasksByProject[ts[i].ProjectID], ts[i])
+			k := ts[i].ProjectID + "_" + ts[i].DevicePubKey
+			taskMap[k] = append(taskMap[k], ts[i])
 		}
 
-		for pidStr, tasks := range tasksByProject {
-			pid, ok := new(big.Int).SetString(pidStr, 10)
+		for _, tasks := range taskMap {
+			pid, ok := new(big.Int).SetString(tasks[0].ProjectID, 10)
 			if !ok {
-				slog.Error("failed to decode project id string", "project_string", pidStr)
+				slog.Error("failed to decode project id string", "project_string", tasks[0].ProjectID)
 				continue
 			}
 			p, err := projectManager.Project(pid)
 			if err != nil {
-				slog.Error("failed to get project", "error", err, "project_id", pidStr)
+				slog.Error("failed to get project", "error", err, "project_id", pid.String())
 				continue
 			}
 			// TODO support project config
 			cfg, err := p.DefaultConfig()
 			if err != nil {
-				slog.Error("failed to get project config", "error", err, "project_id", pidStr)
+				slog.Error("failed to get project config", "error", err, "project_id", pid.String())
 				continue
 			}
-			if cfg.ProofType == "movement" && len(tasks) > 0 {
+			if cfg.ProofType == "movement" {
 				prevTaskID := tasks[0].TaskID
 				tasks[len(tasks)-1].PrevTaskID = prevTaskID
 			}
@@ -62,10 +63,7 @@ func Run(projectManager *project.Manager, db *apidb.DB, sequencerAddr string, in
 			continue
 		}
 
-		for _, tasks := range tasksByProject {
-			if len(tasks) == 0 {
-				continue
-			}
+		for _, tasks := range taskMap {
 			lastTask := tasks[len(tasks)-1]
 			if err := notify(sequencerAddr, common.HexToHash(lastTask.TaskID)); err != nil {
 				slog.Error("failed to notify sequencer", "error", err)
