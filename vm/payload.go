@@ -2,10 +2,12 @@ package vm
 
 import (
 	_ "embed"
+	"log/slog"
 
 	"github.com/consensys/gnark-crypto/ecc"
 	"github.com/consensys/gnark/frontend"
 	"github.com/consensys/gnark/std/math/uints"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
 
 	"github.com/iotexproject/w3bstream/project"
@@ -117,6 +119,18 @@ func encodeMovementPayload(task *task.Task, projectConfig *project.Config) ([]by
 	if (abs(lastLatitude, curLatitude) > 1_000) || (abs(lastLongitude, curLongitude) > 1_000) {
 		isMove = 1
 	}
+
+	slog.Info("------", "lastTimestamp", lastTimestamp)
+	slog.Info("------", "lastLatitude", lastLatitude)
+	slog.Info("------", "lastLongitude", lastLongitude)
+	slog.Info("------", "lastSig", hexutil.Encode(lastSig))
+	slog.Info("------", "curTimestamp", curTimestamp)
+	slog.Info("------", "curLatitude", curLatitude)
+	slog.Info("------", "curLongitude", curLongitude)
+	slog.Info("------", "curSig", hexutil.Encode(curSig))
+	slog.Info("------", "isMove", isMove)
+	slog.Info("------", "lastPayload", string(task.PrevTask.Payload))
+	slog.Info("------", "curPayload", string(task.Payload))
 
 	assignment := ProofofMovementCircuit{
 		LastPayloadHash: uints.NewU8Array(lastPayloadHash[:]),
