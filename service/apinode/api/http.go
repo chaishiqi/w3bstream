@@ -162,13 +162,13 @@ func (s *httpServer) createTask(c *gin.Context) {
 		return
 	}
 
-	_, hash, hashAlg, _, err := HashTask(req, cfg)
+	payloadHash, finalHash, hashAlg, _, err := HashTask(req, cfg)
 	if err != nil {
 		slog.Error("failed to hash request", "error", err)
 		c.JSON(http.StatusBadRequest, newErrResp(errors.Wrap(err, "failed to hash request")))
 		return
 	}
-	recovered, sigAlg, err := recover(hash, sig, cfg)
+	recovered, sigAlg, err := recover(finalHash, sig, cfg)
 	if err != nil {
 		slog.Error("failed to recover public key", "error", err)
 		c.JSON(http.StatusBadRequest, newErrResp(errors.Wrap(err, "invalid signature; could not recover public key")))
@@ -212,6 +212,8 @@ func (s *httpServer) createTask(c *gin.Context) {
 			Signature:          hexutil.Encode(sig),
 			SignatureAlgorithm: sigAlg,
 			HashAlgorithm:      hashAlg,
+			PayloadHash:        hexutil.Encode(payloadHash[:]),
+			TaskHash:           hexutil.Encode(finalHash[:]),
 			CreatedAt:          time.Now(),
 		},
 	); err != nil {

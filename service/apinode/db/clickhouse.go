@@ -21,6 +21,8 @@ type Task struct {
 	Signature          string    `ch:"signature"           gorm:"not null"`
 	SignatureAlgorithm string    `ch:"signature_algorithm" gorm:"not null"`
 	HashAlgorithm      string    `ch:"hash_algorithm"      gorm:"not null"`
+	PayloadHash        string    `ch:"payload_hash"        gorm:"not null"`
+	TaskHash           string    `ch:"task_hash"           gorm:"not null"`
 	CreatedAt          time.Time `ch:"created_at"          gorm:"not null"`
 	PrevTaskID         string    `ch:"previous_task_id"    gorm:"not null"`
 }
@@ -63,6 +65,8 @@ func migrateCH(conn driver.Conn) error {
             signature String NOT NULL,
             signature_algorithm String NOT NULL,
             hash_algorithm String NOT NULL,
+			payload_hash String NOT NULL,
+			task_hash String NOT NULL,
             created_at DateTime NOT NULL,
 			previous_task_id String NOT NULL
         )

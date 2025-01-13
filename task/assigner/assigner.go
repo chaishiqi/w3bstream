@@ -8,6 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -57,18 +58,16 @@ func (r *assigner) assign(tids []common.Hash) error {
 	for _, t := range ts {
 		prover := provers[rand.Intn(len(provers))]
 
-		th, err := t.Hash()
-		if err != nil {
-			return errors.Wrap(err, "failed to hash task")
-		}
 		sig := t.Signature
 		sig[64] += 27
+
+		slog.Info("data for task assignment", "projectID", t.ProjectID.String(), "taskID", t.ID.String(), "prover", prover.String(), "hash", t.TaskHash.String(), "signature", hexutil.Encode(sig))
 
 		tas = append(tas, minter.TaskAssignment{
 			ProjectId: t.ProjectID,
 			TaskId:    t.ID,
 			Prover:    prover,
-			Hash:      th,
+			Hash:      t.TaskHash,
 			Signature: sig,
 		})
 	}

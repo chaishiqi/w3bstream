@@ -16,9 +16,11 @@ async function main() {
 
   const LivenessVerifier = await ethers.deployContract('LivenessVerifier', []);
   await LivenessVerifier.waitForDeployment();
+  console.log(`LivenessVerifier deployed to ${LivenessVerifier.target}`);
 
   const MovementVerifier = await ethers.deployContract('MovementVerifier', []);
   await MovementVerifier.waitForDeployment();
+  console.log(`MovementVerifier deployed to ${MovementVerifier.target}`);
 
   if (process.env.DAPP_PROCESSOR) {
   } else {

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import "./interfaces/IIoIDProxy.sol";
+
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -27,7 +29,8 @@ contract W3bstreamProject is OwnableUpgradeable {
     uint256 public count;
 
     modifier onlyProjectOwner(uint256 _projectId) {
-        require(project.ownerOf(_projectId) == msg.sender, "not owner");
+        address projectOwner = project.ownerOf(_projectId);
+        require(projectOwner == msg.sender || IIoIDProxyOwner(projectOwner).owner() == msg.sender, "not project owner");
         _;
     }
 

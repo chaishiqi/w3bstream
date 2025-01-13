@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import "./interfaces/IRouter.sol";
 import "./interfaces/IDapp.sol";
+import "./interfaces/IIoIDProxy.sol";
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -24,7 +25,8 @@ contract W3bstreamRouter is IRouter, Initializable {
     mapping(uint256 => address) public override dapp;
 
     modifier onlyProjectOwner(uint256 _projectId) {
-        require(IERC721(projectStore).ownerOf(_projectId) == msg.sender, "not project owner");
+        address projectOwner = IERC721(projectStore).ownerOf(_projectId);
+        require(projectOwner == msg.sender || IIoIDProxyOwner(projectOwner).owner() == msg.sender, "not project owner");
         _;
     }
 
